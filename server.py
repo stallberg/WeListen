@@ -11,6 +11,7 @@ from google.cloud.speech import types
 
 app = Flask(__name__)
 
+
 #Initialize the speech client for making api requests
 speech_client = speech.SpeechClient()
 
@@ -90,6 +91,6 @@ def audio():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', debug=True)
+    app.run(host='127.0.0.1', port=8000)
 
 

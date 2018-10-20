@@ -76,6 +76,6 @@ function uploadToServer(blob) {
 
     var formdata = new FormData();
     formdata.append("audio_data",blob, filename);
-    xhr.open("POST","http://35.228.65.146:5000/recognize",true);
+    xhr.open("POST","https://welisten.macister.fi/recognize",true);
     xhr.send(formdata);
 }
