@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 
-# for getting the samplerate
+# for getting the samplerate and duration
 import soundfile as sf
 
 #The required google client libraries
