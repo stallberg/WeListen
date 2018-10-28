@@ -1,16 +1,16 @@
-var microphoneStream;
-var recorder;
-var input;
+let microphoneStream;
+let recorder;
+let input;
  
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioContext = new AudioContext;
+let AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioContext = new AudioContext;
  
-var recordButton = document.getElementById("recordButton");
-var transcriptionOutput = document.getElementById("transcription")
+let recordButton = document.getElementById("recordButton");
+let transcriptionOutput = document.getElementById("transcription")
 
 //Alternate between start and stop recording for same recordButton
-var startStopRecording = (function(){
-    var start = true;
+let startStopRecording = (function(){
+    let start = true;
     return function() {
         start ? startRecording() : stopRecording();
         start = !start;
@@ -19,9 +19,7 @@ var startStopRecording = (function(){
 
 recordButton.addEventListener("click", startStopRecording);
 
-
 function startRecording() {
-
     recordButton.innerHTML = "Stop Recording";
 
     //returns a promise
@@ -58,7 +56,7 @@ function stopRecording() {
 
 function uploadToServer(blob) {
 
-	var filename = "test"
+	let filename = "test"
     
     var xhr = new XMLHttpRequest();
     xhr.onload = function(event) {
@@ -74,9 +72,10 @@ function uploadToServer(blob) {
         recordButton.innerHTML = "Record";
     };
 
-    var formdata = new FormData();
+    let formdata = new FormData();
     formdata.append("audio_data",blob, filename);
-    xhr.open("POST","https://welisten.macister.fi/recognize",true);
+    xhr.open("POST", window.location.href + "recognize", true);
+    //xhr.open("POST","https://welisten.macister.fi/recognize",true);
     formdata.append("audio_data", blob, filename);
     xhr.send(formdata);
 }
