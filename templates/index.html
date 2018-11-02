@@ -8,12 +8,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-
-    <div>
-    <button id="recordButton" class="btn btn-lg btn-primary">Record</button>
-    <h3>Transcription:</h3>
-    <p id="transcription"></p>
-</div>
+    <div class="container">
+        <div class="content">
+            <img src="/static/img/logo_light.jpg" alt="WeListen Logo" />
+            <p><b>Question:</b></p>
+            <p id="question">What is you vehicle's make and model?</p>
+            <p><b>Your answer:</b></p>
+            <p id="transcription">Press <i>"Record"</i> to record your answer</p>
+            <button id="recordButton" class="btn btn-primary">Record</button>
+            <button id="nextButton" class="btn btn-secondary">Next</button>
+        </div>
+    </div>
 
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

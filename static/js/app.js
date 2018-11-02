@@ -6,7 +6,8 @@ let AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext = new AudioContext;
  
 let recordButton = document.getElementById("recordButton");
-let transcriptionOutput = document.getElementById("transcription")
+let transcriptionOutput = document.getElementById("transcription");
+let nextButton = document.getElementById("nextButton");
 
 //Alternate between start and stop recording for same recordButton
 let startStopRecording = (function(){
@@ -21,6 +22,7 @@ recordButton.addEventListener("click", startStopRecording);
 
 function startRecording() {
     recordButton.innerHTML = "Stop Recording";
+    nextButton.disabled = true;
 
     //returns a promise
     navigator.mediaDevices.getUserMedia({ audio: true, video: false})
@@ -32,15 +34,14 @@ function startRecording() {
  
         /* Create the recorder (Record.js library)
         Google cloud speech requires mono audio */
-        recorder = new Recorder(input, { numChannels: 1} )
+        recorder = new Recorder(input, { numChannels: 1} );
         recorder.record()
  
     }).catch(function(error) {
-        recordButton.innerHTML = "Record"
+        recordButton.innerHTML = "Record";
         console.log(error);
     });
 }
-
 
 function stopRecording() {
     //Disable button until response from server
@@ -56,13 +57,14 @@ function stopRecording() {
 
 function uploadToServer(blob) {
 
-	let filename = "test"
+	let filename = "test";
     
     var xhr = new XMLHttpRequest();
     xhr.onload = function(event) {
         if(xhr.readyState === 4){
             //display response on screen
             transcriptionOutput.innerHTML = event.target.responseText;
+            nextButton.disabled = false;
         }
         else {
             console.log("Error");
@@ -79,3 +81,14 @@ function uploadToServer(blob) {
     formdata.append("audio_data", blob, filename);
     xhr.send(formdata);
 }
+
+// Function to be implemented
+let nextQuestion = function(){
+    // Placeholder
+    alert("TBD");
+};
+
+nextButton.addEventListener("click", nextQuestion);
+
+// initialize button as disabled
+nextButton.disabled = true;
