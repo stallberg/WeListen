@@ -8,6 +8,7 @@ let audioContext = new AudioContext;
 let recordButton = document.getElementById("recordButton");
 let transcriptionOutput = document.getElementById("transcription");
 let nextButton = document.getElementById("nextButton");
+let questionOutput = document.getElementById("question");
 
 //Alternate between start and stop recording for same recordButton
 let startStopRecording = (function(){
@@ -84,11 +85,26 @@ function uploadToServer(blob) {
 
 // Function to be implemented
 let nextQuestion = function(){
-    // Placeholder
-    alert("TBD");
+    ind++;
+    if (ind < questions.length){
+        questionOutput.innerHTML = questions[ind];
+        nextButton.disabled = true;
+    }
+    else{
+        questionOutput.innerHTML = "You've reached the final question";
+    }
 };
 
 nextButton.addEventListener("click", nextQuestion);
 
 // initialize button as disabled
 nextButton.disabled = true;
+
+//question counter
+var ind = 0;
+
+// questions
+var questions = ["This is question 1", "This is question 2", "This is question 3"];
+
+// First question
+questionOutput.innerHTML = questions[ind];
