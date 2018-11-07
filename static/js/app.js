@@ -6,8 +6,10 @@ let AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext = new AudioContext;
  
 let recordButton = document.getElementById("recordButton");
-let transcriptionOutput = document.getElementById("transcription");
+let saveButton = document.getElementById("saveButton");
+let previousButton = document.getElementById("previousButton");
 let nextButton = document.getElementById("nextButton");
+let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
 
 //Alternate between start and stop recording for same recordButton
@@ -19,11 +21,67 @@ let startStopRecording = (function(){
     }
 })();
 
+// Function to be implemented
+let saveAnswer = function(){
+    if (transcriptionOutput){
+        let answer = transcriptionOutput.innerHTML;
+        sessionStorage.setItem('answerKey' + ind, answer);
+    }
+};
+
+// Function to be implemented
+let previousQuestion = function(){
+    ind--;
+    if (ind !== 0){
+        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+        questionOutput.innerHTML = questions[ind];
+        nextButton.disabled = false;
+    }
+    else{
+        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + 0);
+        questionOutput.innerHTML = questions[ind];
+        previousButton.disabled = true;
+    }
+};
+
+// Function to be implemented
+let nextQuestion = function(){
+    ind++;
+    if (ind < questions.length){
+        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+        questionOutput.innerHTML = questions[ind];
+        previousButton.disabled = false;
+    }
+    else{
+        //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+        questionOutput.innerHTML = "You reached the final question";
+        nextButton.disabled = true;
+    }
+};
+
 recordButton.addEventListener("click", startStopRecording);
+saveButton.addEventListener("click", saveAnswer);
+previousButton.addEventListener("click", previousQuestion);
+nextButton.addEventListener("click", nextQuestion);
+
+// initialize buttons as disabled
+//saveButton.disabled = true;
+previousButton.disabled = true;
+
+//question counter
+let ind = 0;
+
+// View stored answer on page load if any
+transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+
+// questions for testing UI
+let questions = ["What is your name?", "What is your vehicle's make and model?", "What was the place of accident?"];
+
+// First question
+questionOutput.innerHTML = questions[ind];
 
 function startRecording() {
     recordButton.innerHTML = "Stop Recording";
-    nextButton.disabled = true;
 
     //returns a promise
     navigator.mediaDevices.getUserMedia({ audio: true, video: false})
@@ -46,7 +104,6 @@ function startRecording() {
 
 function stopRecording() {
     //Disable button until response from server
-    recordButton.disabled = true;
     recorder.stop();
  
     //stop the microphone stream
@@ -65,7 +122,6 @@ function uploadToServer(blob) {
         if(xhr.readyState === 4){
             //display response on screen
             transcriptionOutput.innerHTML = event.target.responseText;
-            nextButton.disabled = false;
         }
         else {
             console.log("Error");
@@ -82,29 +138,3 @@ function uploadToServer(blob) {
     formdata.append("audio_data", blob, filename);
     xhr.send(formdata);
 }
-
-// Function to be implemented
-let nextQuestion = function(){
-    ind++;
-    if (ind < questions.length){
-        questionOutput.innerHTML = questions[ind];
-        nextButton.disabled = true;
-    }
-    else{
-        questionOutput.innerHTML = "You've reached the final question";
-    }
-};
-
-nextButton.addEventListener("click", nextQuestion);
-
-// initialize button as disabled
-nextButton.disabled = true;
-
-//question counter
-var ind = 0;
-
-// questions
-var questions = ["This is question 1", "This is question 2", "This is question 3"];
-
-// First question
-questionOutput.innerHTML = questions[ind];

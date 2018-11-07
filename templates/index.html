@@ -12,14 +12,19 @@
         <div class="content">
             <img src="/static/img/logo_light.jpg" alt="WeListen Logo" />
             <p><b>Question:</b></p>
-            <!-- JSON testing {{ my_list[2] }} -->
             <p id="question"></p>
             <p><b>Your answer:</b></p>
-            <p id="transcription">Press <i>"Record"</i> to record your answer</p>
-            <button id="recordButton" class="btn btn-primary">Record</button>
-            <button id="nextButton" class="btn btn-secondary">Next</button>
+            <p id="transcription"></p>
+        </div>
+        <div class="buttons">
+            <button id="recordButton" class="btn btn-primary btn-lg">Record</button>
+            <button id="saveButton" class="btn btn-success btn-lg">Save</button>
+            <br>
+            <button id="previousButton" class="btn btn-secondary btn-sm">Previous</button>
+            <button id="nextButton" class="btn btn-secondary btn-sm">Next</button>
         </div>
     </div>
+    <!-- JSON testing {{ my_list[2] }} -->
 
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

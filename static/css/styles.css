@@ -5,13 +5,26 @@ html, body, div { margin: 0; padding: 1%; border: 0 none; }
 }
 
 .content {
+}
 
+.buttons {
+    position: sticky;
 }
 
 #recordButton {
+}
 
+#saveButton {
+}
+
+#previousButton {
+    margin-top: 15px;
 }
 
 #nextButton {
+    margin-top: 15px;
+}
 
+#reviewButton {
+    margin-top: 25px;
 }
