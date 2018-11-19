@@ -27,4 +27,5 @@ html, body, div { margin: 0; padding: 1%; border: 0 none; }
 
 #reviewButton {
     margin-top: 25px;
+    visibility: hidden;
 }
