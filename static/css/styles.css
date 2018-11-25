@@ -1,10 +1,31 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 5%;
+html, body, div { margin: 0; padding: 1%; border: 0 none; }
+
+.container {
+    text-align: center;
+}
+
+.content {
+}
+
+.buttons {
+    position: sticky;
 }
 
 #recordButton {
-    margin-bottom: 20px;
+}
+
+#saveButton {
+}
+
+#previousButton {
+    margin-top: 15px;
+}
+
+#nextButton {
+    margin-top: 15px;
+}
+
+#reviewButton {
+    margin-top: 25px;
+    visibility: hidden;
 }

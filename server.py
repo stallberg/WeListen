@@ -13,6 +13,7 @@ app = Flask(__name__)
 #Initialize the speech client for making api requests
 speech_client = speech.SpeechClient()
 
+
 def generate_speech_config(sample_rate):
     speech_config = types.RecognitionConfig(
     encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
@@ -43,7 +44,7 @@ def recognize(data, sample_rate, audio_duration_seconds):
 
 @app.route('/')
 def mainpage():
-    return render_template("index.html")
+    return render_template("index.html", my_list=["Question 1 Here", "Question 2 Here", "Question 3 Here"])
 
 @app.route('/recognize', methods=['POST'])
 def audio():
