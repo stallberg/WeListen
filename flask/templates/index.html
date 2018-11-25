@@ -17,7 +17,6 @@
             <p id="transcription"></p>
         </div>
         <div class="buttons">
-            <button id="recordButton" class="btn btn-primary btn-lg">Record</button>
             <button id="saveButton" class="btn btn-success btn-lg">Save</button>
             <br>
             <button id="previousButton" class="btn btn-secondary btn-sm">Previous</button>
@@ -30,8 +29,8 @@
     </div>
     <!-- JSON testing {{ my_list[2] }} -->
 
-    <!-- <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script> -->
-    <script src="{{ url_for('static', filename='js/recognize.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/watson-speech.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/socket.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

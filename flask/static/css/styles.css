@@ -29,3 +29,7 @@ html, body, div { margin: 0; padding: 1%; border: 0 none; }
     margin-top: 25px;
     visibility: hidden;
 }
+
+img {
+    margin-bottom: 3%;
+}
