@@ -13,7 +13,9 @@ const languageCode = 'en-US';
 const speechCommands = [
     'clear',
     'next',
-    'previous'
+    'previous',
+    'male',
+    'female',
 ]
 
 const request = {

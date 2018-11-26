@@ -13,11 +13,17 @@
             <img src="/static/img/logo_light.jpg" alt="WeListen Logo" />
             <p id="questionHeader"><b></b></p>
             <p id="question"></p>
-            <p><b>Your answer:</b></p>
-            <p id="transcription"></p>
+            <div id="normal-answer-container">
+                <p><b>Your answer:</b></p>
+                <p id="transcription"></p>
+            </div>
+            <div id="multiple-choice-container">
+                <!-- <ol id="multiple-choice-options"></ol> -->
+
+            </div>
         </div>
         <div class="buttons">
-            <button id="saveButton" class="btn btn-success btn-lg">Save</button>
+            <button id="clearButton" class="btn btn-success btn-lg">Clear</button>
             <br>
             <button id="previousButton" class="btn btn-secondary btn-sm">Previous</button>
             <button id="nextButton" class="btn btn-secondary btn-sm">Next</button>
@@ -29,7 +35,9 @@
     </div>
     <!-- JSON testing {{ my_list[2] }} -->
 
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/socket.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>

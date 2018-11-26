@@ -1,51 +1,63 @@
-let saveButton = document.getElementById("saveButton");
+let clearButton = document.getElementById("clearButton");
 let previousButton = document.getElementById("previousButton");
 let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
 let questionHeader = document.getElementById("questionHeader");
+let multipleChoiceContainer = document.getElementById("multiple-choice-container");
+let normalAnswerContainer = document.getElementById("normal-answer-container");
+let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
 
-
-// Function saves answers as sessionstorage items
 let updateQuestionHeader = function(){
     let questionNumber = ind+1;
     questionHeader.innerHTML = "<b>Question " + questionNumber + ":</b>";
 };
 
-// Function saves answers as sessionstorage items
 let saveAnswer = function(){
-    if (transcriptionOutput){
-        let answer = transcriptionOutput.innerHTML;
-        sessionStorage.setItem('answerKey' + ind, answer);
+
+    if(questions[ind].answerType === 'multi') {
+        $("#multiple-choice-container").each(function(i, container) {
+            $(container).children('input').each(function(j, element) {
+                if(element.checked) {
+                    questions[ind].answer = j;
+                }  
+            })  
+        })  
     }
+
+    else if(questions[ind].answerType === 'str'){
+        questions[ind].answer = transcriptionOutput.innerHTML;
+        clearTranscriptionField();
+    }
+
 };
 
 // previous function (needs refactoring)
-let previousQuestion = function(){
+var previousQuestion = function(){
+    saveAnswer();
     ind--;
+    updateQuestionHeader();
+    renderQuestion(questions[ind]);
+
     if (ind !== 0){
-        updateQuestionHeader();
-        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        questionOutput.innerHTML = questions[ind];
         nextButton.disabled = false;
     }
     else{
-        updateQuestionHeader();
-        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + 0);
-        questionOutput.innerHTML = questions[ind];
         previousButton.disabled = true;
     }
 };
 
 // next function (needs refactoring)
-let nextQuestion = function(){
+var nextQuestion = function(){
+    saveAnswer();
     ind++;
     if (ind < questions.length){
         updateQuestionHeader();
-        transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        questionOutput.innerHTML = questions[ind];
+        //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+        renderQuestion(questions[ind])
+        //questionOutput.innerHTML = questions[ind].question;
         previousButton.disabled = false;
     }
     else{
@@ -63,10 +75,10 @@ let reviewForm = function(){
     let reviewOutput = "";
     for (i = 0; i < questions.length; i++) {
         if (sessionStorage.getItem('answerKey' + i) == null) {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i] + "<br>" + "<b>Not answered!</b>" + "<br>";
+            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + "<b>Not answered!</b>" + "<br>";
         }
         else {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i] + "<br>" + sessionStorage.getItem('answerKey' + i) + "<br>";
+            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + sessionStorage.getItem('answerKey' + i) + "<br>";
         }
     }
 
@@ -79,7 +91,7 @@ let reviewForm = function(){
     //document.getElementById("demo").innerHTML = reviewOutput;
 };
 
-saveButton.addEventListener("click", saveAnswer);
+clearButton.addEventListener("click", clearTranscriptionField);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
@@ -95,11 +107,94 @@ let ind = 0;
 updateQuestionHeader();
 
 // View stored answer on page load if any
-transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
+//transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
 
 // questions for testing UI
-let questions = ["What is your name?", "What is your vehicle's make and model?", "What was the place of accident?"];
+let form = {
+    name: 'Test form',
+    questions: [
+        {
+            question: 'How old are you?',
+            answerType : 'str',
+            answer: '',
+        },
+        {
+            question: "What is your vehicle's make and model?",
+            answerType : 'str',
+            answer: '',
+        },
 
+        {
+            question: "What was the place of accident?",
+            answerType : 'str',
+            answer: '',
+        },
+        {
+            question: "What is your gender?",
+            answerType: 'multi',
+            options: [
+                {
+                    description: 'Male'
+                },
+                {
+                    description: 'Female'
+                }
+            ],
+            answer: '',
+        },
+    ]
+}
+
+function renderQuestion(question) {
+    //Set the question being displayed to the user
+    questionOutput.innerHTML = question.question;
+
+    //For multiple choice, hide the normal user input area
+    if(question.answerType === 'multi') {
+        multipleChoiceContainer.style.display = "block";
+        normalAnswerContainer.style.display = "none";
+        renderMultipleChoiceQuestions(question.options);
+
+
+    }
+
+    //Normal question
+    else if(question.answerType === 'str') {
+        multipleChoiceContainer.style.display = "none";
+        normalAnswerContainer.style.display = "block";
+        transcriptionOutput.innerHTML = question.answer;
+    }
+
+}
+
+function renderMultipleChoiceQuestions(options) {
+    clearMultipleChoices();
+    options.forEach(function(option) {
+        $("#multiple-choice-container").append("<input type='radio' name='" + 5 + "' value='" + option.description + "' /> " + option.description +
+        " <br />");
+    })
+
+    // set answer as checked, if question has been answered before
+    $("#multiple-choice-container").each(function(i, container) {
+        $(container).children('input').each(function(j, element) {
+            if(j === questions[ind].answer){
+                element.checked = true;
+            }
+            
+        })
+    })
+
+
+}
+
+function clearMultipleChoices() {
+    while (multipleChoiceContainer.firstChild) {
+        multipleChoiceContainer.removeChild(multipleChoiceContainer.firstChild);
+    }
+}
+
+var questions = form.questions;
+
+//let questions = ["What is your name?", "What is your vehicle's make and model?", "What was the place of accident?"];
 // First question
-questionOutput.innerHTML = questions[ind];
-
+renderQuestion(questions[ind]);

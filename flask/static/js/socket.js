@@ -42,18 +42,49 @@ socket.on('transcription', function(data){
     
 
     if(isSpeechCommand(transcription, isFinal) === false){
+
+        processUserInput(transcription, isFinal, stability);
+
+
+    }
+})
+
+function processUserInput(transcription, isFinal, stability) {
+    let questionType = questions[ind].answerType;
+
+    if(questionType === 'multi') {
+        transcription = transcription.replace(/^\s+/g, '');
+        questions[ind].options.forEach(function(option) {
+            if(option.description.toLowerCase() === transcription.toLowerCase()){
+
+                $("#multiple-choice-container").each(function(i, container) {
+                    $(container).children('input').each(function(j, element) {
+                        if(element.value.toLowerCase() === transcription.toLowerCase()){
+                            element.checked = true;
+                        }
+                        
+                    })
+                })
+                
+            }
+        })
+    }
+
+    else if(questionType === 'str') {
+
         if(isFinal) {
             currentFinal += transcription;
             document.getElementById("transcription").innerHTML = currentFinal;
         }
         else {
+
             //update output to user if over certain stability threshold
-            if(stability > 0.8){
+            if(stability >= 0.2){
                 document.getElementById("transcription").innerHTML = currentFinal + transcription;
             }    
         }
     }
-})
+}
 
 function isSpeechCommand(text, isFinal){
     let command = text.toLowerCase().trim();
@@ -67,11 +98,19 @@ function isSpeechCommand(text, isFinal){
 
         case 'next':
             console.log("next");
-            return true;
+            if(isFinal){
+                nextQuestion();
+                return true;
+            }
+            
         
         case 'previous':
+        if(isFinal){
             console.log("previous");
+            previousQuestion();
             return true;
+        }
+            
             
         default:
             console.log("Default called");
@@ -133,53 +172,3 @@ function convertFloat32ToInt16(buffer) {
 
 
 
-
-
-
-
-// OLD CODE FOR CAPTURING AND SAVING AUDIO
-// navigator.mediaDevices.getUserMedia(
-//     { 
-//         audio: true 
-//     })
-    
-//     .then(stream => {
-//         var mediaRecorder = new MediaRecorder(stream)
-//         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-        
-
-//         record.onclick = () => {
-//             mediaRecorder.start()
-//             console.log(mediaRecorder.state);
-//             console.log("Recording started!");
-            
-            
-//         }
-
-//         var chunks = []
-
-//         mediaRecorder.ondataavailable = (e) => {
-//             chunks.push(e.data);
-//             console.log(e.data);
-            
-//             socket.emit('audio_stream', chunks)
-//         }
-
-//         stop.onclick = () => {
-//             mediaRecorder.stop()
-//             chunks = []
-//             console.log(mediaRecorder.state);
-
-            
-//         }
-
-//         mediaRecorder.onstop = (e) => {
-//             console.log("stopped recorder");          
-            
-//         }
-
-//     })
-
-//     .catch(err => {
-//         console.log("ERROR: " + err);
-//     }) 
