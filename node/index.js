@@ -23,6 +23,7 @@ const request = {
       encoding: encoding,
       sampleRateHertz: sampleRateHertz,
       languageCode: languageCode,
+      enableAutomaticPunctuation: true,
       speechContexts: [{
           phrases: speechCommands
       }]

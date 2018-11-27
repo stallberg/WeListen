@@ -4,7 +4,7 @@ let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
-let questionHeader = document.getElementById("questionHeader");
+//let questionHeader = document.getElementById("questionHeader");
 let multipleChoiceContainer = document.getElementById("multiple-choice-container");
 let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
@@ -12,7 +12,7 @@ let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
 let updateQuestionHeader = function(){
     let questionNumber = ind+1;
-    questionHeader.innerHTML = "<b>Question " + questionNumber + ":</b>";
+    //questionHeader.innerHTML = "<b>Question " + questionNumber + ":</b>";
 };
 
 let saveAnswer = function(){
