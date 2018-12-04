@@ -35,8 +35,16 @@
     </div>
     <!-- JSON testing {{ my_list[2] }} -->
 
+    <div id="overlay">
+        <div id="text"></div>
+        <button id="saveButton" class="btn btn-success btn-lg">Save as PDF</button>
+        <br>
+        <button id="closeButton" class="btn btn-secondary btn-lg">close</button>
+    </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"
+            integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/socket.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

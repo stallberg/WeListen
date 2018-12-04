@@ -110,6 +110,29 @@ function isSpeechCommand(text, isFinal){
             previousQuestion();
             return true;
         }
+
+        case 'review':
+        if(isFinal){
+            console.log("review");
+            reviewForm();
+            return true;
+        }
+
+
+        case 'save':
+        if(isFinal){
+            console.log("save");
+            savePDF();
+            return true;
+        }
+
+
+        case 'close':
+        if(isFinal){
+            console.log("close");
+            closeOverlay();
+            return true;
+        }
             
             
         default:

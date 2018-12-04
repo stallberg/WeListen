@@ -2,6 +2,8 @@ let clearButton = document.getElementById("clearButton");
 let previousButton = document.getElementById("previousButton");
 let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
+let saveButton = document.getElementById("saveButton");
+let closeButton = document.getElementById("closeButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
 //let questionHeader = document.getElementById("questionHeader");
@@ -57,13 +59,14 @@ var nextQuestion = function(){
         updateQuestionHeader();
         //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
         renderQuestion(questions[ind])
+
         //questionOutput.innerHTML = questions[ind].question;
         previousButton.disabled = false;
     }
     else{
         //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        questionHeader.innerHTML = "<b>You reached the final question</b>";
-        questionOutput.innerHTML = "Please review the form before submitting";
+        //questionHeader.innerHTML = "<b>You reached the final question</b>";
+        //questionOutput.innerHTML = "Please review the form before submitting";
         nextButton.disabled = true;
         reviewButton.style.visibility = "visible";
     }
@@ -74,27 +77,52 @@ let reviewForm = function(){
     let i;
     let reviewOutput = "";
     for (i = 0; i < questions.length; i++) {
-        if (sessionStorage.getItem('answerKey' + i) == null) {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + "<b>Not answered!</b>" + "<br>";
-        }
-        else {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + sessionStorage.getItem('answerKey' + i) + "<br>";
-        }
+        reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + questions[i].answer + "<br>";
     }
 
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("text").innerHTML = reviewOutput;
+
+    //overlay
+
+    //pop-up windows
+    /*
     var w = window.open("");
     w.document.write("<html><head><title>Form Review</title></head><body><b>Vehicle accident claim form:</b></body></html>");
     p = document.createElement("p");
     p.innerHTML = reviewOutput;
     w.document.body.appendChild(p);
-
     //document.getElementById("demo").innerHTML = reviewOutput;
+    */
+};
+
+
+function closeOverlay() {
+    document.getElementById("overlay").style.display = "none";
+}
+
+//savePDF()
+let savePDF = function(){
+    let i;
+    let reviewOutput = '';
+    for (i = 0; i < questions.length; i++) {
+        reviewOutput = reviewOutput + "\n" + "\n" + "Question " + (i+1) + "\n" + questions[i].question + "\n" + questions[i].answer + "\n";
+    }
+
+    // Default export is a4 paper, portrait, using milimeters for units
+    var doc = new jsPDF()
+
+    doc.text('Vehicle accident claim form:', 10, 10)
+    doc.text(reviewOutput, 10, 10);
+    doc.save('test.pdf');
 };
 
 clearButton.addEventListener("click", clearTranscriptionField);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
-reviewButton.addEventListener("click", reviewForm);
+//reviewButton.addEventListener("click", reviewForm);
+saveButton.addEventListener("click", savePDF);
+closeButton.addEventListener("click", closeOverlay);
 
 // initialize buttons as disabled
 //saveButton.disabled = true;
