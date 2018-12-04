@@ -16,6 +16,9 @@ const speechCommands = [
     'previous',
     'male',
     'female',
+    'hello',
+    'goodbye',
+    'test',
 ]
 
 const request = {
