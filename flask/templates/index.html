@@ -4,9 +4,21 @@
     <title>WeListen</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Material design bootstrap -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Own styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+
 </head>
+
 <body>
     <div class="container">
         <div class="content">
@@ -15,7 +27,7 @@
             <h2 id="question"></h2>
             <div id="normal-answer-container">
                 <!-- <p><b>Your answer:</b></p> -->
-                <p id="transcription"></p>
+                <textarea id="transcription"></textarea>
             </div>
             <div id="multiple-choice-container">
                 <!-- <ol id="multiple-choice-options"></ol> -->
@@ -23,10 +35,10 @@
             </div>
         </div>
         <div class="buttons">
-            <button id="clearButton" class="btn btn-success btn-lg">Clear</button>
+            <button id="clearButton" class="btn btn-success">Clear</button>
             <br>
-            <button id="previousButton" class="btn btn-secondary btn-sm">Previous</button>
-            <button id="nextButton" class="btn btn-secondary btn-sm">Next</button>
+            <button id="previousButton" class="btn btn-default btn-sm">Previous</button>
+            <button id="nextButton" class="btn btn-default btn-sm">Next</button>
             <br>
             <button id="reviewButton" class="btn btn-success">Review & Submit</button>
             <br>
@@ -36,6 +48,15 @@
     <!-- JSON testing {{ my_list[2] }} -->
 
     
+    
+
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/js/mdb.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/socket.js') }}"></script>
