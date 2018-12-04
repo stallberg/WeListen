@@ -6,6 +6,7 @@ let saveButton = document.getElementById("saveButton");
 let closeButton = document.getElementById("closeButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
+let messageOutput = document.getElementById("messageOutput");
 //let questionHeader = document.getElementById("questionHeader");
 let multipleChoiceContainer = document.getElementById("multiple-choice-container");
 let normalAnswerContainer = document.getElementById("normal-answer-container");
@@ -64,9 +65,11 @@ var nextQuestion = function(){
         previousButton.disabled = false;
     }
     else{
+        ind--;
         //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
         //questionHeader.innerHTML = "<b>You reached the final question</b>";
         //questionOutput.innerHTML = "Please review the form before submitting";
+        messageOutput.innerHTML = "<b>You reached the final question.</b>";
         nextButton.disabled = true;
         reviewButton.style.visibility = "visible";
     }
@@ -77,15 +80,13 @@ let reviewForm = function(){
     let i;
     let reviewOutput = "";
     for (i = 0; i < questions.length; i++) {
-        reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + questions[i].answer + "<br>";
+        reviewOutput = reviewOutput + "<b>Question " + (i+1) + "</b><br>" + questions[i].question + "<br>" + questions[i].answer + "<br>";
     }
 
     document.getElementById("overlay").style.display = "block";
     document.getElementById("text").innerHTML = reviewOutput;
 
-    //overlay
-
-    //pop-up windows
+    //pop-up window commented out
     /*
     var w = window.open("");
     w.document.write("<html><head><title>Form Review</title></head><body><b>Vehicle accident claim form:</b></body></html>");
@@ -95,7 +96,6 @@ let reviewForm = function(){
     //document.getElementById("demo").innerHTML = reviewOutput;
     */
 };
-
 
 function closeOverlay() {
     document.getElementById("overlay").style.display = "none";
@@ -112,7 +112,7 @@ let savePDF = function(){
     // Default export is a4 paper, portrait, using milimeters for units
     var doc = new jsPDF()
 
-    doc.text('Vehicle accident claim form:', 10, 10)
+    //doc.text('Vehicle accident claim form:', 10, 10)
     doc.text(reviewOutput, 10, 10);
     doc.save('test.pdf');
 };
@@ -120,7 +120,7 @@ let savePDF = function(){
 clearButton.addEventListener("click", clearTranscriptionField);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
-//reviewButton.addEventListener("click", reviewForm);
+reviewButton.addEventListener("click", reviewForm);
 saveButton.addEventListener("click", savePDF);
 closeButton.addEventListener("click", closeOverlay);
 
