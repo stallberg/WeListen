@@ -10,15 +10,16 @@ let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
 
-let updateQuestionHeader = function(){
-    let questionNumber = ind+1;
-    //questionHeader.innerHTML = "<b>Question " + questionNumber + ":</b>";
+let updateProgressBar = function(index) {
+    let percentage = ((index+1) / questions.length)*100
+    $(".progress-bar").css("width", `${percentage}%`);
+    $(".progress-bar").html(`${index+1}/${questions.length}`);
 };
 
 let saveAnswer = function(){
 
     if(questions[ind].answerType === 'multi') {
-        $("#multiple-choice-container").each(function(i, container) {
+        $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 if(element.checked) {
                     questions[ind].answer = j;
@@ -38,7 +39,7 @@ let saveAnswer = function(){
 var previousQuestion = function(){
     saveAnswer();
     ind--;
-    updateQuestionHeader();
+    updateProgressBar(ind);
     renderQuestion(questions[ind]);
 
     if (ind !== 0){
@@ -54,7 +55,7 @@ var nextQuestion = function(){
     saveAnswer();
     ind++;
     if (ind < questions.length){
-        updateQuestionHeader();
+        updateProgressBar(ind);
         //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
         renderQuestion(questions[ind])
         //questionOutput.innerHTML = questions[ind].question;
@@ -62,8 +63,8 @@ var nextQuestion = function(){
     }
     else{
         //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        questionHeader.innerHTML = "<b>You reached the final question</b>";
-        questionOutput.innerHTML = "Please review the form before submitting";
+        // questionHeader.innerHTML = "<b>You reached the final question</b>";
+        // questionOutput.innerHTML = "Please review the form before submitting";
         nextButton.disabled = true;
         reviewButton.style.visibility = "visible";
     }
@@ -100,24 +101,83 @@ reviewButton.addEventListener("click", reviewForm);
 //saveButton.disabled = true;
 previousButton.disabled = true;
 
-//question counter
-let ind = 0;
 
-//initialize question header on page load
-updateQuestionHeader();
+function renderQuestion(question) {
+    //Set the question being displayed to the user
+    questionOutput.innerHTML = question.question;
 
-// View stored answer on page load if any
-//transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
 
-// questions for testing UI
-let form = {
+    //For multiple choice, hide the normal user input area
+    if(question.answerType === 'multi') {
+        multipleChoiceContainer.style.display = "block";
+        normalAnswerContainer.style.display = "none";
+        renderMultipleChoiceQuestions(question);
+
+
+    }
+
+    else if(question.answerType === 'checkbox') {
+        multipleChoiceContainer.style.display = "block";
+        normalAnswerContainer.style.display = "none";
+        renderCheckboxQuestions(question);
+    }
+
+    //Normal question
+    else if(question.answerType === 'str') {
+        multipleChoiceContainer.style.display = "none";
+        normalAnswerContainer.style.display = "block";
+        $("#transcription").html(question.answer);
+    }
+
+}
+
+function renderMultipleChoiceQuestions({options}) {
+    clearMultipleChoiceContainer();
+    options.forEach(function(option, index) {
+
+        $("#multiple-choice-container")
+            .append( `<div class="custom-control custom-radio">
+                        <input id=${index} type="radio" class="custom-control-input" name="radio" value=${option.description} />
+                        <label for=${index} class="custom-control-label">${option.description}</label>
+                    </div>`
+        );
+    })
+
+    // set answer as checked, if question has been answered before
+    $(".custom-radio").each(function(i, container) {
+        $(container).children('input').each(function(j, element) {
+            if(j === questions[ind].answer){
+                element.checked = true;
+            }
+            
+        })
+    })
+}
+
+
+function renderCheckboxQuestions({options}) {
+    clearMultipleChoiceContainer();
+    options.forEach(function(option, index) {
+
+        $("#multiple-choice-container")
+            .append( `<div class="custom-control custom-checkbox">
+                        <input id=${index} type="checkbox" class="custom-control-input" name="checkbox" value=${option.description} />
+                        <label for=${index} class="custom-control-label">${option.description}</label>
+                    </div>`
+        );
+    })
+}
+
+//Empties all child elements under the container, used for both radio and checkbox
+function clearMultipleChoiceContainer() {
+    $("#multiple-choice-container").empty()
+}
+
+
+//Test form for building UI
+var form = {
     name: 'Test form',
     questions: [
-        {
-            question: 'How old are you?',
-            answerType : 'str',
-            answer: '',
-        },
         {
             question: "What is your vehicle's make and model?",
             answerType : 'str',
@@ -142,59 +202,27 @@ let form = {
             ],
             answer: '',
         },
+        {
+            question: "Checkbox question",
+            answerType : 'checkbox',
+            options: [
+                {description: 'Hello'},
+                {description: 'Goodbye'},
+                {description: 'Test'},
+            ],
+            answer: '',
+        }
     ]
 }
 
-function renderQuestion(question) {
-    //Set the question being displayed to the user
-    questionOutput.innerHTML = question.question;
-
-    //For multiple choice, hide the normal user input area
-    if(question.answerType === 'multi') {
-        multipleChoiceContainer.style.display = "block";
-        normalAnswerContainer.style.display = "none";
-        renderMultipleChoiceQuestions(question.options);
-
-
-    }
-
-    //Normal question
-    else if(question.answerType === 'str') {
-        multipleChoiceContainer.style.display = "none";
-        normalAnswerContainer.style.display = "block";
-        transcriptionOutput.innerHTML = question.answer;
-    }
-
-}
-
-function renderMultipleChoiceQuestions(options) {
-    clearMultipleChoices();
-    options.forEach(function(option) {
-        $("#multiple-choice-container").append("<input type='radio' name='" + 5 + "' value='" + option.description + "' /> " + option.description +
-        " <br />");
-    })
-
-    // set answer as checked, if question has been answered before
-    $("#multiple-choice-container").each(function(i, container) {
-        $(container).children('input').each(function(j, element) {
-            if(j === questions[ind].answer){
-                element.checked = true;
-            }
-            
-        })
-    })
-
-
-}
-
-function clearMultipleChoices() {
-    while (multipleChoiceContainer.firstChild) {
-        multipleChoiceContainer.removeChild(multipleChoiceContainer.firstChild);
-    }
-}
-
+//array of all questions
 var questions = form.questions;
 
-//let questions = ["What is your name?", "What is your vehicle's make and model?", "What was the place of accident?"];
-// First question
+//question counter
+let ind = 0;
+
+//initialize progressbar on page load
+updateProgressBar(0);
+
+// Show first question
 renderQuestion(questions[ind]);

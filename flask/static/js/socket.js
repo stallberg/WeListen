@@ -5,6 +5,7 @@
 const socket = io.connect('http://localhost:3000');
 
 let transcriptionField = document.getElementById("transcription");
+let checkboxCanChange = true;
 
 
 //For recording audio from user's microphone
@@ -53,11 +54,12 @@ function processUserInput(transcription, isFinal, stability) {
     let questionType = questions[ind].answerType;
 
     if(questionType === 'multi') {
-        transcription = transcription.replace(/^\s+/g, '');
+        transcription = transcription.replace(/^\s+/g, '').replace(/\.+$/, "");
         questions[ind].options.forEach(function(option) {
             if(option.description.toLowerCase() === transcription.toLowerCase()){
-
-                $("#multiple-choice-container").each(function(i, container) {
+                
+                // custom-radio is the material design bootstrap class for radiobuttons
+                $(".custom-radio").each(function(i, container) {
                     $(container).children('input').each(function(j, element) {
                         if(element.value.toLowerCase() === transcription.toLowerCase()){
                             element.checked = true;
@@ -70,14 +72,38 @@ function processUserInput(transcription, isFinal, stability) {
         })
     }
 
+
+    else if(questionType === 'checkbox') {
+        transcription = transcription.replace(/^\s+/g, '').replace(/\.+$/, "");
+        questions[ind].options.forEach(function(option) {
+            if(option.description.toLowerCase() === transcription.toLowerCase() && checkboxCanChange) {
+
+                $(".custom-checkbox").each(function(i, container) {
+                    $(container).children('input').each(function(j, element) {
+                        if(element.value.toLowerCase() === transcription.toLowerCase()){
+                            element.checked = !element.checked;
+                            checkboxCanChange = false;
+                        }
+                        
+                    })
+                })
+
+            }
+        })
+
+        //Making sure that the checkbox doesn't get checked/unchecked several times due to how real time streaming returns transcriptions
+        if(isFinal)checkboxCanChange = true;
+    }
+
     else if(questionType === 'str') {
 
         if(isFinal) {
             currentFinal += transcription;
-            document.getElementById("transcription").innerHTML = currentFinal;
+            $("#transcription").html(currentFinal);
+            $("#transcription").blur();
         }
         else {
-
+            $("#transcription").focus();
             //update output to user if over certain stability threshold
             if(stability >= 0.2){
                 document.getElementById("transcription").innerHTML = currentFinal + transcription;
@@ -126,6 +152,11 @@ function clearTranscriptionField(){
     transcriptionField.innerHTML = "";
     currentFinal = "";
 }
+
+//Auto scrolling behaviour of the transcription textarea field
+$("#transcription").change(function() {
+    $("#transcription").scrollTop($("#transcription")[0].scrollHeight);
+})
 
 
 

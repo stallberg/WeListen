@@ -1,4 +1,8 @@
-html, body, div { margin: 0; padding: 1%; border: 0 none; }
+body {
+    margin: 0; 
+    box-sizing: border-box;
+}
+    
 
 .container {
     text-align: center;
@@ -31,5 +35,40 @@ html, body, div { margin: 0; padding: 1%; border: 0 none; }
 }
 
 img {
+    margin-bottom: 3%;
+    margin-top: 1%;
+}
+
+#transcription {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    resize: none;
+    background-color: white;
+
+}
+
+#question {
+    margin-bottom: 3%;
+}
+
+#normal-answer-container, #multiple-choice-container {
+    margin-top: 1%;
+    margin-bottom: 3%;
+}
+
+.custom-radio, .custom-checkbox {
+    margin-bottom: 10px;
+}
+
+#multiple-choice-container {
+    text-align: initial;
+    margin-left: 45%;
+}
+
+.progress {
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 3%;
 }
