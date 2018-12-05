@@ -2,8 +2,11 @@ let clearButton = document.getElementById("clearButton");
 let previousButton = document.getElementById("previousButton");
 let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
+let saveButton = document.getElementById("saveButton");
+let closeButton = document.getElementById("closeButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
+let messageOutput = document.getElementById("messageOutput");
 //let questionHeader = document.getElementById("questionHeader");
 let multipleChoiceContainer = document.getElementById("multiple-choice-container");
 let normalAnswerContainer = document.getElementById("normal-answer-container");
@@ -22,10 +25,23 @@ let saveAnswer = function(){
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 if(element.checked) {
-                    questions[ind].answer = j;
+                    questions[ind].answer = element.value;
                 }  
             })  
         })  
+    }
+
+    //store checkbox answers in array?
+    if(questions[ind].answerType === 'checkbox') {
+        let answers = []
+        $(".custom-checkbox").each(function(i, container) {
+            $(container).children('input').each(function(j, element) {
+                if(element.checked) {
+                    answers.push(element.value)
+                }  
+            })  
+        })  
+        questions[ind].answer = answers;
     }
 
     else if(questions[ind].answerType === 'str'){
@@ -44,6 +60,8 @@ var previousQuestion = function(){
 
     if (ind !== 0){
         nextButton.disabled = false;
+        reviewButton.style.visibility = "hidden";
+        messageOutput.innerHTML = "";
     }
     else{
         previousButton.disabled = true;
@@ -54,17 +72,15 @@ var previousQuestion = function(){
 var nextQuestion = function(){
     saveAnswer();
     ind++;
-    if (ind < questions.length){
-        updateProgressBar(ind);
-        //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        renderQuestion(questions[ind])
+    updateProgressBar(ind);
+    renderQuestion(questions[ind])
+
+    if (ind < questions.length-1){
         //questionOutput.innerHTML = questions[ind].question;
         previousButton.disabled = false;
     }
     else{
-        //transcriptionOutput.innerHTML = sessionStorage.getItem('answerKey' + ind);
-        // questionHeader.innerHTML = "<b>You reached the final question</b>";
-        // questionOutput.innerHTML = "Please review the form before submitting";
+        messageOutput.innerHTML = "<b>You reached the final question.</b>";
         nextButton.disabled = true;
         reviewButton.style.visibility = "visible";
     }
@@ -72,30 +88,53 @@ var nextQuestion = function(){
 
 // review form
 let reviewForm = function(){
+    saveAnswer() //Save last answer
     let i;
     let reviewOutput = "";
     for (i = 0; i < questions.length; i++) {
-        if (sessionStorage.getItem('answerKey' + i) == null) {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + "<b>Not answered!</b>" + "<br>";
-        }
-        else {
-            reviewOutput = reviewOutput + "Question " + (i+1) + "<br>" + questions[i].question + "<br>" + sessionStorage.getItem('answerKey' + i) + "<br>";
-        }
+        reviewOutput = reviewOutput + "<b>Question " + (i+1) + "</b><br>" + questions[i].question + "<br>" + questions[i].answer + "<br>";
     }
 
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("text").innerHTML = reviewOutput;
+
+    //pop-up window commented out
+    /*
     var w = window.open("");
     w.document.write("<html><head><title>Form Review</title></head><body><b>Vehicle accident claim form:</b></body></html>");
     p = document.createElement("p");
     p.innerHTML = reviewOutput;
     w.document.body.appendChild(p);
-
     //document.getElementById("demo").innerHTML = reviewOutput;
+    */
+};
+
+function closeOverlay() {
+    document.getElementById("overlay").style.display = "none";
+}
+
+//savePDF()
+let savePDF = function(){
+    let i;
+    let reviewOutput = '';
+    for (i = 0; i < questions.length; i++) {
+        reviewOutput = reviewOutput + "\n" + "\n" + "Question " + (i+1) + "\n" + questions[i].question + "\n" + questions[i].answer + "\n";
+    }
+
+    // Default export is a4 paper, portrait, using milimeters for units
+    var doc = new jsPDF()
+
+    //doc.text('Vehicle accident claim form:', 10, 10)
+    doc.text(reviewOutput, 10, 10);
+    doc.save('test.pdf');
 };
 
 clearButton.addEventListener("click", clearTranscriptionField);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
+saveButton.addEventListener("click", savePDF);
+closeButton.addEventListener("click", closeOverlay);
 
 // initialize buttons as disabled
 //saveButton.disabled = true;
@@ -146,7 +185,7 @@ function renderMultipleChoiceQuestions({options}) {
     // set answer as checked, if question has been answered before
     $(".custom-radio").each(function(i, container) {
         $(container).children('input').each(function(j, element) {
-            if(j === questions[ind].answer){
+            if(element.value === questions[ind].answer){
                 element.checked = true;
             }
             
@@ -165,6 +204,18 @@ function renderCheckboxQuestions({options}) {
                         <label for=${index} class="custom-control-label">${option.description}</label>
                     </div>`
         );
+    })
+
+    // set answer as checked, if question has been answered before
+    $(".custom-checkbox").each(function(i, container) {
+        $(container).children('input').each(function(j, element) {
+            questions[ind].answer.forEach(function(answer) {                
+                if(answer === element.value){
+                    element.checked = true
+                }
+            })
+            
+        })
     })
 }
 
@@ -210,7 +261,7 @@ var form = {
                 {description: 'Goodbye'},
                 {description: 'Test'},
             ],
-            answer: '',
+            answer: [],
         }
     ]
 }

@@ -19,6 +19,9 @@ const speechCommands = [
     'hello',
     'goodbye',
     'test',
+    'review',
+    'save',
+    'close',
 ]
 
 const request = {

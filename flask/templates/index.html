@@ -46,14 +46,27 @@
             <button id="previousButton" class="btn btn-default btn-sm">Previous</button>
             <button id="nextButton" class="btn btn-default btn-sm">Next</button>
             <br>
-            <button id="reviewButton" class="btn btn-success">Review & Submit</button>
+            <p id="messageOutput"></p>
+            <button id="reviewButton" class="btn btn-success">Review Form</button>
             <br>
-            <p id="demo"></p>
         </div>
     </div>
 
+    <div id="overlay">
+        <div id="text"></div>
+        <button id="saveButton" class="btn btn-success btn-lg">Save as PDF</button>
+        <br>
+        <button id="closeButton" class="btn btn-secondary btn-sm">Close</button>
+    </div>
     
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"
+            integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    
     <!-- Bootstrap tooltips -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
     <!-- Bootstrap core JavaScript -->
