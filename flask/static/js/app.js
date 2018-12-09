@@ -139,7 +139,12 @@ previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
 saveButton.addEventListener("click", savePDF);
-submitButton.addEventListener("click", submitFormButtonHandler);
+
+
+$("#submitButton").click(function() {
+    submitFormButtonHandler();
+})
+
 
 // initialize buttons as disabled
 //saveButton.disabled = true;

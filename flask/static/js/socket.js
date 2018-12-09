@@ -131,25 +131,32 @@ function isSpeechCommand(text, isFinal){
             return true;
         
         case 'previous':
-        if(isFinal){
-            console.log("previous");
-            previousQuestion();
-        }
-        return true;
+            if(isFinal){
+                console.log("previous");
+                previousQuestion();
+            }
+            return true;
 
         case 'review':
-        if(isFinal){
-            console.log("review");
-            reviewForm();
-        }
-        return true;
+            if(isFinal){
+                console.log("review");
+                reviewForm();
+            }
+            return true;
 
         case 'save':
-        if(isFinal){
-            console.log("save");
-            savePDF();
-        }
-        return true;
+            if(isFinal){
+                console.log("save");
+                savePDF();
+            }
+            return true;
+
+        case 'submit':
+            if(isFinal) {
+                console.log("Submit");
+                $("#submitButton").trigger('click');
+            }
+            return true;
             
             
         default:
