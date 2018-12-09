@@ -22,6 +22,7 @@ const speechCommands = [
     'review',
     'save',
     'close',
+    'submit',
 ]
 
 const request = {
