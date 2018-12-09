@@ -3,11 +3,10 @@ let previousButton = document.getElementById("previousButton");
 let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
 let saveButton = document.getElementById("saveButton");
-let closeButton = document.getElementById("closeButton");
+let submitButton = document.getElementById("submitButton");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
 let messageOutput = document.getElementById("messageOutput");
-//let questionHeader = document.getElementById("questionHeader");
 let multipleChoiceContainer = document.getElementById("multiple-choice-container");
 let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
@@ -53,6 +52,7 @@ let saveAnswer = function(){
 
 // previous function (needs refactoring)
 var previousQuestion = function(){
+    if(ind === 0) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind--;
     updateProgressBar(ind);
@@ -60,7 +60,8 @@ var previousQuestion = function(){
 
     if (ind !== 0){
         nextButton.disabled = false;
-        reviewButton.style.visibility = "hidden";
+        reviewButton.style.display = "none";
+        nextButton.style.display = "inline-block";
         messageOutput.innerHTML = "";
     }
     else{
@@ -70,6 +71,7 @@ var previousQuestion = function(){
 
 // next function (needs refactoring)
 var nextQuestion = function(){
+    if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind++;
     updateProgressBar(ind);
@@ -79,46 +81,42 @@ var nextQuestion = function(){
         //questionOutput.innerHTML = questions[ind].question;
         previousButton.disabled = false;
     }
+
+    //final question
     else{
-        messageOutput.innerHTML = "<b>You reached the final question.</b>";
+        messageOutput.innerHTML = "<h5>You reached the final question.</h5>";
         nextButton.disabled = true;
-        reviewButton.style.visibility = "visible";
+        reviewButton.style.display = "inline-block";
+        nextButton.style.display = "none";
     }
 };
 
 // review form
-let reviewForm = function(){
+function reviewForm() {
     saveAnswer() //Save last answer
-    let i;
     let reviewOutput = "";
-    for (i = 0; i < questions.length; i++) {
-        reviewOutput = reviewOutput + "<b>Question " + (i+1) + "</b><br>" + questions[i].question + "<br>" + questions[i].answer + "<br>";
+
+    for(let i = 0; i < questions.length; i++) {
+        if(questions[i].answer.length === 0) {
+            reviewOutput+= `<h5>${questions[i].question}</h5><p>Question not answered.</p><br>`;   
+        }
+        else {
+            reviewOutput+= `<h5>${questions[i].question}</h5><p>${questions[i].answer}</p><br>`;
+        }
     }
 
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("text").innerHTML = reviewOutput;
+    $("#form-review-body").empty();
+    $("#form-review-body").append(reviewOutput);
 
-    //pop-up window commented out
-    /*
-    var w = window.open("");
-    w.document.write("<html><head><title>Form Review</title></head><body><b>Vehicle accident claim form:</b></body></html>");
-    p = document.createElement("p");
-    p.innerHTML = reviewOutput;
-    w.document.body.appendChild(p);
-    //document.getElementById("demo").innerHTML = reviewOutput;
-    */
+
 };
 
-function closeOverlay() {
-    document.getElementById("overlay").style.display = "none";
-}
-
 //savePDF()
-let savePDF = function(){
+function savePDF(){
     let i;
-    let reviewOutput = '';
+    let reviewOutput = 'Test Form\n';
     for (i = 0; i < questions.length; i++) {
-        reviewOutput = reviewOutput + "\n" + "\n" + "Question " + (i+1) + "\n" + questions[i].question + "\n" + questions[i].answer + "\n";
+        reviewOutput = reviewOutput + "\n" + "\n" + (i+1) + ". " + questions[i].question + "\n" + questions[i].answer + "\n";
     }
 
     // Default export is a4 paper, portrait, using milimeters for units
@@ -129,12 +127,19 @@ let savePDF = function(){
     doc.save('test.pdf');
 };
 
+//Auto closes the modal on successful submit after 1,5s
+function submitFormButtonHandler() {
+    setTimeout(function() {
+        $("#formSubmittedModal").modal('hide')
+    }, 1500);
+}
+
 clearButton.addEventListener("click", clearTranscriptionField);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
 saveButton.addEventListener("click", savePDF);
-closeButton.addEventListener("click", closeOverlay);
+submitButton.addEventListener("click", submitFormButtonHandler);
 
 // initialize buttons as disabled
 //saveButton.disabled = true;

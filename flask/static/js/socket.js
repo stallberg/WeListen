@@ -43,7 +43,8 @@ socket.on('transcription', function(data){
     
 
     if(isSpeechCommand(transcription, isFinal) === false){
-
+        console.log("not a command");
+        
         processUserInput(transcription, isFinal, stability);
 
 
@@ -119,46 +120,36 @@ function isSpeechCommand(text, isFinal){
         case 'clear':
             if(isFinal){
                 clearTranscriptionField();
-                return true;
             }
+            return true;
 
         case 'next':
             console.log("next");
             if(isFinal){
                 nextQuestion();
-                return true;
             }
-            
+            return true;
         
         case 'previous':
         if(isFinal){
             console.log("previous");
             previousQuestion();
-            return true;
         }
+        return true;
 
         case 'review':
         if(isFinal){
             console.log("review");
             reviewForm();
-            return true;
         }
-
+        return true;
 
         case 'save':
         if(isFinal){
             console.log("save");
             savePDF();
-            return true;
         }
-
-
-        case 'close':
-        if(isFinal){
-            console.log("close");
-            closeOverlay();
-            return true;
-        }
+        return true;
             
             
         default:

@@ -15,11 +15,6 @@ body {
     position: sticky;
 }
 
-#recordButton {
-}
-
-#saveButton {
-}
 
 #previousButton {
     margin-top: 15px;
@@ -30,7 +25,8 @@ body {
 }
 
 #reviewButton {
-    visibility: hidden;
+    margin-top: 15px;
+    display: none;
 }
 
 #messageOutput {
@@ -57,7 +53,7 @@ img {
 
 #normal-answer-container, #multiple-choice-container {
     margin-top: 1%;
-    margin-bottom: 3%;
+    margin-bottom: 5%;
 }
 
 .custom-radio, .custom-checkbox {
@@ -98,6 +94,3 @@ img {
     color: black;
 }
 
-#closeButton{
-    margin-top: 15px;
-}
