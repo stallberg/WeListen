@@ -140,7 +140,7 @@ function isSpeechCommand(text, isFinal){
         case 'review':
             if(isFinal){
                 console.log("review");
-                reviewForm();
+                $("#reviewButton").trigger('click');
             }
             return true;
 
