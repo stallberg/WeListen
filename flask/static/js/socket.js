@@ -17,15 +17,16 @@ function handleUserAudio(stream) {
 	socket.emit('start_stream', '')
     let context = new AudioContext();
     let sampleRate = context.sampleRate;
+    
     let source = context.createMediaStreamSource(stream);
-    let processor = context.createScriptProcessor(2048, 1, 1);
+    let processor = context.createScriptProcessor(4096, 1, 1);
 
     source.connect(processor);
     processor.connect(context.destination);
 
     processor.onaudioprocess = function(e){
         
-        audio = e.inputBuffer.getChannelData(0); //left channel
+        let audio = e.inputBuffer.getChannelData(0); //left channel
 
         //Convert to 16000 samplerate, recommended by Google Cloud Speech
 		let convertedAudio = downsampleBuffer(audio, sampleRate, 16000);
@@ -119,7 +120,7 @@ function isSpeechCommand(text, isFinal){
     switch(command){
         case 'clear':
             if(isFinal){
-                clearTranscriptionField();
+                clear();
             }
             return true;
 
@@ -169,9 +170,21 @@ function isSpeechCommand(text, isFinal){
 
 //commands and command related functions
 
-function clearTranscriptionField(){
-    transcriptionField.innerHTML = "";
-    currentFinal = "";
+function clear(){
+
+    if(questions[ind].answerType === 'str'){
+        transcriptionField.innerHTML = "";
+        currentFinal = "";
+    }
+    
+    if(questions[ind].answerType === 'checkbox'){
+        $(".custom-checkbox").each(function(i, container) {
+            $(container).children('input').each(function(j, element) {
+                element.checked = false;   
+            });
+        });
+    }
+
 }
 
 //Auto scrolling behaviour of the transcription textarea field

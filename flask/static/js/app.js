@@ -45,7 +45,7 @@ let saveAnswer = function(){
 
     else if(questions[ind].answerType === 'str'){
         questions[ind].answer = transcriptionOutput.innerHTML;
-        clearTranscriptionField();
+        clear();
     }
 
 };
@@ -134,7 +134,7 @@ function submitFormButtonHandler() {
     }, 1500);
 }
 
-clearButton.addEventListener("click", clearTranscriptionField);
+clearButton.addEventListener("click", clear);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
@@ -282,7 +282,7 @@ var form = {
     name: 'Defect Report Form',
     questions: [
         {
-            question: "Please specify the title of the defect",
+            question: "Please specify the title of the error",
             answerType : 'str',
             answer: '',
         },
@@ -299,13 +299,13 @@ var form = {
         },
 
         {
-            question: "Please describe the defect details",
+            question: "Please describe the error details",
             answerType : 'str',
             answer: '',
         },
 
         {
-            question: "What is the severity of the defect?",
+            question: "What is the severity of the error?",
             answerType: 'multi',
             options: [
                 {
