@@ -23,6 +23,12 @@ const speechCommands = [
     'save',
     'close',
     'submit',
+    'desktop',
+    'mobile',
+    'tablet',
+    'high',
+    'medium',
+    'low',
 ]
 
 const request = {

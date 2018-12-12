@@ -234,7 +234,7 @@ function clearMultipleChoiceContainer() {
     $("#multiple-choice-container").empty()
 }
 
-
+/*
 //Test form for building UI
 var form = {
     name: 'Test form',
@@ -272,6 +272,53 @@ var form = {
                 {description: 'Test'},
             ],
             answer: [],
+        }
+    ]
+}
+*/
+
+//Question form for demo
+var form = {
+    name: 'Defect Report Form',
+    questions: [
+        {
+            question: "Please specify the title of the defect",
+            answerType : 'str',
+            answer: '',
+        },
+
+        {
+            question: "Which platform(s) are you using?",
+            answerType : 'checkbox',
+            options: [
+                {description: 'Desktop'},
+                {description: 'Mobile'},
+                {description: 'Tablet'},
+            ],
+            answer: [],
+        },
+
+        {
+            question: "Please describe the defect details",
+            answerType : 'str',
+            answer: '',
+        },
+
+        {
+            question: "What is the severity of the defect?",
+            answerType: 'multi',
+            options: [
+                {
+                    description: 'High'
+                },
+                {
+                    description: 'Medium'
+                },
+                {
+                    description: 'Low'
+                }
+            ],
+            answer: '',
         }
     ]
 }
