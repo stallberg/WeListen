@@ -9,7 +9,7 @@ let checkboxCanChange = true;
 
 
 //For recording audio from user's microphone
-navigator.mediaDevices.getUserMedia({audio:true, video: false})
+navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:true})
 	.then(handleUserAudio);
 
 
