@@ -146,6 +146,22 @@ $("#submitButton").click(function() {
 })
 
 
+$(document).keydown(function(e){
+    console.log(e.key);
+    switch(e.key) {
+        
+        case 'ArrowLeft':
+            previousQuestion();
+            break;
+        case 'ArrowRight':
+            nextQuestion();
+            break;
+
+        default: return;
+    }
+
+});
+
 // initialize buttons as disabled
 //saveButton.disabled = true;
 previousButton.disabled = true;

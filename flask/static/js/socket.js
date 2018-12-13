@@ -125,7 +125,6 @@ function isSpeechCommand(text, isFinal){
             return true;
 
         case 'next':
-            console.log("next");
             if(isFinal){
                 nextQuestion();
             }
@@ -133,35 +132,30 @@ function isSpeechCommand(text, isFinal){
         
         case 'previous':
             if(isFinal){
-                console.log("previous");
                 previousQuestion();
             }
             return true;
 
         case 'review':
             if(isFinal){
-                console.log("review");
                 $("#reviewButton").trigger('click');
             }
             return true;
 
         case 'save':
             if(isFinal){
-                console.log("save");
                 savePDF();
             }
             return true;
 
         case 'submit':
             if(isFinal) {
-                console.log("Submit");
                 $("#submitButton").trigger('click');
             }
             return true;
             
             
         default:
-            console.log("Default called");
             return false;
         
     }
