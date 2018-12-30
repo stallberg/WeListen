@@ -52,6 +52,7 @@ let saveAnswer = function(){
 
 // previous function (needs refactoring)
 var previousQuestion = function(){
+    socket.emit('restart_stream', '');
     if(ind === 0) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind--;
@@ -71,6 +72,7 @@ var previousQuestion = function(){
 
 // next function (needs refactoring)
 var nextQuestion = function(){
+    socket.emit('restart_stream', '');
     if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind++;
@@ -131,6 +133,16 @@ function savePDF(){
 function submitFormButtonHandler() {
     setTimeout(function() {
         $("#formSubmittedModal").modal('hide')
+        ind = 0;
+        updateProgressBar(ind);
+        // Show first question and empty answers
+        questions = createEmptyAnswers(); //just for demo
+        renderQuestion(questions[ind]);
+        messageOutput.innerHTML = "";
+        nextButton.disabled = false;
+        reviewButton.style.display = "none";
+        nextButton.style.display = "inline-block";
+        previousButton.disabled = true;
     }, 1500);
 }
 
@@ -145,22 +157,6 @@ $("#submitButton").click(function() {
     submitFormButtonHandler();
 })
 
-
-$(document).keydown(function(e){
-    console.log(e.key);
-    switch(e.key) {
-        
-        case 'ArrowLeft':
-            previousQuestion();
-            break;
-        case 'ArrowRight':
-            nextQuestion();
-            break;
-
-        default: return;
-    }
-
-});
 
 // initialize buttons as disabled
 //saveButton.disabled = true;
@@ -293,51 +289,65 @@ var form = {
 }
 */
 
-//Question form for demo
-var form = {
-    name: 'Defect Report Form',
-    questions: [
-        {
-            question: "Please specify the title of the error",
-            answerType : 'str',
-            answer: '',
-        },
-
-        {
-            question: "Which platform(s) are you using?",
-            answerType : 'checkbox',
-            options: [
-                {description: 'Desktop'},
-                {description: 'Mobile'},
-                {description: 'Tablet'},
-            ],
-            answer: [],
-        },
-
-        {
-            question: "Please describe the error details",
-            answerType : 'str',
-            answer: '',
-        },
-
-        {
-            question: "What is the severity of the error?",
-            answerType: 'multi',
-            options: [
-                {
-                    description: 'High'
-                },
-                {
-                    description: 'Medium'
-                },
-                {
-                    description: 'Low'
-                }
-            ],
-            answer: '',
-        }
-    ]
+function createEmptyAnswers() {
+    let form = fetchForm();
+    return form.questions;
 }
+
+
+ function fetchForm() {
+
+     //For demo purposes/testing
+     let form = {
+        name: 'Defect Report Form',
+        questions: [
+            {
+                question: "Please specify the title of the error",
+                answerType : 'str',
+                answer: '',
+            },
+    
+            {
+                question: "Which platform(s) are you using?",
+                answerType : 'checkbox',
+                options: [
+                    {description: 'Desktop'},
+                    {description: 'Mobile'},
+                    {description: 'Tablet'},
+                ],
+                answer: [],
+            },
+    
+            {
+                question: "Please describe the error details",
+                answerType : 'str',
+                answer: '',
+            },
+    
+            {
+                question: "What is the severity of the error?",
+                answerType: 'multi',
+                options: [
+                    {
+                        description: 'High'
+                    },
+                    {
+                        description: 'Medium'
+                    },
+                    {
+                        description: 'Low'
+                    }
+                ],
+                answer: '',
+            }
+        ]
+    }
+    return form
+ }
+
+//Question form for demo
+var form = fetchForm()
+
 
 //array of all questions
 var questions = form.questions;
@@ -346,7 +356,7 @@ var questions = form.questions;
 let ind = 0;
 
 //initialize progressbar on page load
-updateProgressBar(0);
+updateProgressBar(ind);
 
 // Show first question
 renderQuestion(questions[ind]);

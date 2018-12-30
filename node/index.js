@@ -14,11 +14,6 @@ const speechCommands = [
     'clear',
     'next',
     'previous',
-    'male',
-    'female',
-    'hello',
-    'goodbye',
-    'test',
     'review',
     'save',
     'close',
@@ -29,6 +24,8 @@ const speechCommands = [
     'high',
     'medium',
     'low',
+    'crash',
+    'error code',
 ]
 
 const request = {
@@ -52,6 +49,11 @@ const request = {
 
     client.on('start_stream', function (data) {
         startRecognitionStream(this, data);
+    });
+
+    client.on('restart_stream', function (data) {
+        console.log("restarted");
+        restartRecognitionStream(this);
     });
 
     client.on('end_stream', function (data) {

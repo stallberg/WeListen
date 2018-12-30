@@ -162,6 +162,25 @@ function isSpeechCommand(text, isFinal){
     
 }
 
+$(document).keydown(function(e){
+    console.log(e.key);
+    switch(e.key) {
+        
+        case 'ArrowLeft':
+            previousQuestion();
+            break;
+        case 'ArrowRight':
+            nextQuestion();
+            break;
+        
+        case 'ArrowDown':
+            socket.emit('restart_stream', '');
+
+        default: return;
+    }
+
+});
+
 //commands and command related functions
 
 function clear(){
