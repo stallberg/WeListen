@@ -1,6 +1,6 @@
 from databaseApi import dbApi
 
-# answerType is always one of the following: int, str, bool, date, time, multi
+# answerType is always one of the following: int, str, bool, date, time, single, multi
 
 def populateAnswerType():
     def callback():
