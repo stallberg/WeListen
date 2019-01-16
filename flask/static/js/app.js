@@ -68,6 +68,9 @@ var previousQuestion = function(){
     else{
         previousButton.disabled = true;
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // next function (needs refactoring)
@@ -91,6 +94,9 @@ var nextQuestion = function(){
         reviewButton.style.display = "inline-block";
         nextButton.style.display = "none";
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // review form
@@ -294,6 +300,14 @@ function createEmptyAnswers() {
     return form.questions;
 }
 
+function isFirstQuestion() {
+    return (ind === 0)
+}
+
+function isFinalQuestion() {
+    return (ind === questions.length - 1)
+}
+
 
  function fetchForm() {
 
@@ -303,12 +317,14 @@ function createEmptyAnswers() {
         questions: [
             {
                 question: "Please specify the title of the error",
+                audio: 'https://storage.googleapis.com/speech_recognition_audio/q1.mp3',
                 answerType : 'str',
                 answer: '',
             },
     
             {
                 question: "Which platform(s) are you using?",
+                audio: "https://storage.googleapis.com/speech_recognition_audio/q2.mp3",
                 answerType : 'checkbox',
                 options: [
                     {description: 'Desktop'},
@@ -320,12 +336,14 @@ function createEmptyAnswers() {
     
             {
                 question: "Please describe the error details",
+                audio: "https://storage.googleapis.com/speech_recognition_audio/q3.mp3",
                 answerType : 'str',
                 answer: '',
             },
     
             {
                 question: "What is the severity of the error?",
+                audio: "https://storage.googleapis.com/speech_recognition_audio/q4.mp3",
                 answerType: 'multi',
                 options: [
                     {
@@ -360,3 +378,10 @@ updateProgressBar(ind);
 
 // Show first question
 renderQuestion(questions[ind]);
+
+//Play first question when page loads
+//Workaround for random bug in chrome
+$( document ).ready(function() {
+    setTimeout(function(){ playTTS() }, 400);
+})
+
