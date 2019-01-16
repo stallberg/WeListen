@@ -55,6 +55,7 @@ socket.on('transcription', function(data){
         $("#previousButton").prop("disabled", true);
         $("#nextButton").prop("disabled", true);
         $("#clearButton").prop("disabled", true);
+        $("#reviewButton").prop("disabled", true);
     }
     else {
         if(!isFinalQuestion()) {
@@ -65,6 +66,7 @@ socket.on('transcription', function(data){
         }
         
         $("#clearButton").prop("disabled", false);
+        $("#reviewButton").prop("disabled", false);
     }
 
 
