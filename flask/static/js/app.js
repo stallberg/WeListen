@@ -87,7 +87,7 @@ var nextQuestion = function(){
 
     //final question
     else{
-        messageOutput.innerHTML = "<h5>You have reached the final question.<br>Use the Review button or command to review and submit the form</h5>";
+        messageOutput.innerHTML = "<h5>You have reached the final question.<br>Use the <b>Review</b> button or voice command to review the form before submitting.</h5>";
         nextButton.disabled = true;
         reviewButton.style.display = "inline-block";
         nextButton.style.display = "none";
