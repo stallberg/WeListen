@@ -16,16 +16,24 @@ body {
 }
 
 
+#clearButton {
+    margin-top: 15px;
+}
+
 #previousButton {
     margin-top: 15px;
 }
 
 #nextButton {
     margin-top: 15px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
 #reviewButton {
     margin-top: 15px;
+    padding-right: 25px;
+    padding-left: 25px;
     display: none;
 }
 
@@ -33,9 +41,18 @@ body {
     margin-top: 25px;
 }
 
+.btn-toolbar1 {
+    margin-bottom: 2%;
+}
+
 img {
-    margin-bottom: 3%;
-    margin-top: 1%;
+    margin-left: 0.5%;
+    width: 100px;
+    height: 100px;
+}
+
+#form-name {
+    margin-top: 0.25%;
 }
 
 #transcription {
@@ -69,7 +86,8 @@ img {
     width: 35%;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 7%;
+    margin-top: 1%;
+    margin-bottom: 1.5%;
 }
 
 

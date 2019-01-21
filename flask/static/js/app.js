@@ -4,6 +4,7 @@ let nextButton = document.getElementById("nextButton");
 let reviewButton = document.getElementById("reviewButton");
 let saveButton = document.getElementById("saveButton");
 let submitButton = document.getElementById("submitButton");
+let formName = document.getElementById("formName");
 let transcriptionOutput = document.getElementById("transcription");
 let questionOutput = document.getElementById("question");
 let messageOutput = document.getElementById("messageOutput");
@@ -86,7 +87,7 @@ var nextQuestion = function(){
 
     //final question
     else{
-        messageOutput.innerHTML = "<h5>You reached the final question.</h5>";
+        messageOutput.innerHTML = "<h5>You have reached the final question.<br>Use the Review button or command to review and submit the form</h5>";
         nextButton.disabled = true;
         reviewButton.style.display = "inline-block";
         nextButton.style.display = "none";
@@ -161,6 +162,10 @@ $("#submitButton").click(function() {
 // initialize buttons as disabled
 //saveButton.disabled = true;
 previousButton.disabled = true;
+
+function renderFormName(name) {
+    formName.innerHTML = name;
+}
 
 
 function renderQuestion(question) {
@@ -357,6 +362,9 @@ let ind = 0;
 
 //initialize progressbar on page load
 updateProgressBar(ind);
+
+// Show form title
+renderFormName(form.name);
 
 // Show first question
 renderQuestion(questions[ind]);
