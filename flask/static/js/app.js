@@ -133,11 +133,13 @@ function savePDF(){
 };
 
 
+//Functioonality to be implemented
 function toggleVoiceCommandsHandler(){
     $("#toggleVoiceCommands").toggleClass("muted");
 }
 
 
+//Functionality to be implemented
 function toggleTextToSpeechHandler(){
     $("#toggleTextToSpeech").toggleClass("muted");
 }
