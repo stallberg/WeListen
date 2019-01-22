@@ -41,7 +41,7 @@ body {
     margin-top: 25px;
 }
 
-.btn-toolbar1 {
+.custom-btn-toolbar {
     margin-bottom: 2%;
 }
 
@@ -52,8 +52,12 @@ img {
 }
 
 i {
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 0.5%;
+    margin-right: 0.25%;
+}
+
+.muted {
+    opacity: 0.25;
 }
 
 #form-name {

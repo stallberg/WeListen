@@ -11,6 +11,8 @@ let messageOutput = document.getElementById("messageOutput");
 let multipleChoiceContainer = document.getElementById("multiple-choice-container");
 let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
+let toggleVoiceCommands = document.getElementById("toggleVoiceCommands");
+let toggleTextToSpeech = document.getElementById("toggleTextToSpeech");
 
 
 let updateProgressBar = function(index) {
@@ -130,6 +132,17 @@ function savePDF(){
     doc.save('test.pdf');
 };
 
+
+function toggleVoiceCommandsHandler(){
+    $("#toggleVoiceCommands").toggleClass("muted");
+}
+
+
+function toggleTextToSpeechHandler(){
+    $("#toggleTextToSpeech").toggleClass("muted");
+}
+
+
 //Auto closes the modal on successful submit after 1,5s
 function submitFormButtonHandler() {
     setTimeout(function() {
@@ -156,6 +169,14 @@ saveButton.addEventListener("click", savePDF);
 
 $("#submitButton").click(function() {
     submitFormButtonHandler();
+})
+
+$("#toggleVoiceCommands").click(function() {
+    toggleVoiceCommandsHandler();
+})
+
+$("#toggleTextToSpeech").click(function() {
+    toggleTextToSpeechHandler();
 })
 
 
