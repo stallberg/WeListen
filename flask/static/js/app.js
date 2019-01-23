@@ -12,10 +12,10 @@ let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
 
-let updateProgressBar = function(index) {
-    let percentage = ((index+1) / questions.length)*100
+let updateProgressBar = function() {
+    let percentage = ((ind+1) / questions.length)*100
     $(".progress-bar").css("width", `${percentage}%`);
-    $(".progress-bar").html(`${index+1}/${questions.length}`);
+    $(".progress-bar").html(`${ind+1}/${questions.length}`);
 };
 
 let saveAnswer = function(){
@@ -56,7 +56,7 @@ var previousQuestion = function(){
     if(ind === 0) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind--;
-    updateProgressBar(ind);
+    updateProgressBar();
     renderQuestion(questions[ind]);
 
     if (ind !== 0){
@@ -76,7 +76,7 @@ var nextQuestion = function(){
     if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind++;
-    updateProgressBar(ind);
+    updateProgressBar();
     renderQuestion(questions[ind])
 
     if (ind < questions.length-1){
@@ -134,9 +134,11 @@ function submitFormButtonHandler() {
     setTimeout(function() {
         $("#formSubmittedModal").modal('hide')
         ind = 0;
-        updateProgressBar(ind);
+        updateProgressBar();
+
         // Show first question and empty answers
-        questions = createEmptyAnswers(); //just for demo
+        questions = resetAllAnswers(questions);
+
         renderQuestion(questions[ind]);
         messageOutput.innerHTML = "";
         nextButton.disabled = false;
@@ -246,117 +248,43 @@ function clearMultipleChoiceContainer() {
     $("#multiple-choice-container").empty()
 }
 
-/*
-//Test form for building UI
-var form = {
-    name: 'Test form',
-    questions: [
-        {
-            question: "What is your vehicle's make and model?",
-            answerType : 'str',
-            answer: '',
-        },
-
-        {
-            question: "What was the place of accident?",
-            answerType : 'str',
-            answer: '',
-        },
-        {
-            question: "What is your gender?",
-            answerType: 'multi',
-            options: [
-                {
-                    description: 'Male'
-                },
-                {
-                    description: 'Female'
-                }
-            ],
-            answer: '',
-        },
-        {
-            question: "Checkbox question",
-            answerType : 'checkbox',
-            options: [
-                {description: 'Hello'},
-                {description: 'Goodbye'},
-                {description: 'Test'},
-            ],
-            answer: [],
-        }
-    ]
-}
-*/
-
-function createEmptyAnswers() {
-    let form = fetchForm();
-    return form.questions;
-}
-
-
- function fetchForm() {
-
-     //For demo purposes/testing
-     let form = {
-        name: 'Defect Report Form',
-        questions: [
-            {
-                question: "Please specify the title of the error",
-                answerType : 'str',
-                answer: '',
-            },
-    
-            {
-                question: "Which platform(s) are you using?",
-                answerType : 'checkbox',
-                options: [
-                    {description: 'Desktop'},
-                    {description: 'Mobile'},
-                    {description: 'Tablet'},
-                ],
-                answer: [],
-            },
-    
-            {
-                question: "Please describe the error details",
-                answerType : 'str',
-                answer: '',
-            },
-    
-            {
-                question: "What is the severity of the error?",
-                answerType: 'multi',
-                options: [
-                    {
-                        description: 'High'
-                    },
-                    {
-                        description: 'Medium'
-                    },
-                    {
-                        description: 'Low'
-                    }
-                ],
-                answer: '',
-            }
-        ]
+function resetAllAnswers(questions) {
+    questions = questions.forEach(( _, index) => {
+    if (questions[index].answerType === 'checkbox') {
+        questions[index].answer = []
     }
-    return form
- }
+    else {
+        questions[index].answer = ''
+    }
+    })
+    return questions
+}
+
 
 //Question form for demo
-var form = fetchForm()
-
+var form
 
 //array of all questions
-var questions = form.questions;
+var questions
 
-//question counter
+//current question index
 let ind = 0;
 
-//initialize progressbar on page load
-updateProgressBar(ind);
 
-// Show first question
-renderQuestion(questions[ind]);
+/* TESTING FORM FETCH */ 
+ fetch('./bug-report')
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function(json){
+        form = json
+        questions = form.questions
+
+        //initialize progressbar
+        updateProgressBar()
+
+        // Show first question
+        renderQuestion(questions[ind]);
+        
+    })
+

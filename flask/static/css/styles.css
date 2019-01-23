@@ -44,7 +44,9 @@ img {
     margin-right: auto;
     resize: none;
     background-color: white;
-
+}
+#transcription:focus {
+    border: 1px solid green;
 }
 
 #question {
