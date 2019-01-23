@@ -255,14 +255,15 @@ function clearMultipleChoiceContainer() {
 }
 
 function resetAllAnswers(questions) {
-    questions = questions.forEach(( _, index) => {
-    if (questions[index].answerType === 'checkbox') {
-        questions[index].answer = []
+
+    for(let i = 0; i < questions.length; i++) {
+        if (questions[i].answerType === 'checkbox') {
+            questions[i].answer = []
+        }
+        else {
+            questions[i].answer = ''
+        }
     }
-    else {
-        questions[index].answer = ''
-    }
-    })
     return questions
 }
 
