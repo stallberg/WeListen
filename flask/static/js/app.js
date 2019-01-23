@@ -68,6 +68,9 @@ var previousQuestion = function(){
     else{
         previousButton.disabled = true;
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // next function (needs refactoring)
@@ -91,6 +94,9 @@ var nextQuestion = function(){
         reviewButton.style.display = "inline-block";
         nextButton.style.display = "none";
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // review form
@@ -260,6 +266,14 @@ function resetAllAnswers(questions) {
     return questions
 }
 
+function isFirstQuestion() {
+    return (ind === 0)
+}
+
+function isFinalQuestion() {
+    return (ind === questions.length - 1)
+}
+
 
 //Question form for demo
 var form
@@ -285,6 +299,9 @@ let ind = 0;
 
         // Show first question
         renderQuestion(questions[ind]);
+
+        // Play tts for first question
+        playTTS()
         
     })
 

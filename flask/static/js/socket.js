@@ -1,12 +1,12 @@
 
-//const socket = io.connect('http://' + document.domain + ':' + location.port);
+//const socket = io.connect('http://' + document.domain);
 
 //use this one for local development
 const socket = io.connect('http://localhost:3000');
 
 let transcriptionField = document.getElementById("transcription");
 let checkboxCanChange = true;
-
+let isTalking = false;
 
 //For recording audio from user's microphone
 navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:true})
@@ -40,8 +40,7 @@ let currentFinal = "";
 socket.on('transcription', function(data){
     let isFinal = data.results[0].isFinal;
     let transcription = data.results[0].alternatives[0].transcript;
-    let stability = data.results[0].stability;
-    
+    let stability = data.results[0].stability;    
 
     if(isSpeechCommand(transcription, isFinal) === false){
         console.log("not a command");
@@ -50,6 +49,27 @@ socket.on('transcription', function(data){
 
 
     }
+
+    //Make buttons disabled when client is still receiving results
+    if(!isFinal) {
+        $("#previousButton").prop("disabled", true);
+        $("#nextButton").prop("disabled", true);
+        $("#clearButton").prop("disabled", true);
+        $("#reviewButton").prop("disabled", true);
+    }
+    else {
+        if(!isFinalQuestion()) {
+            $("#nextButton").prop("disabled", false);
+        }
+        if(!isFirstQuestion()) {
+            $("#previousButton").prop("disabled", false);
+        }
+        
+        $("#clearButton").prop("disabled", false);
+        $("#reviewButton").prop("disabled", false);
+    }
+
+
 })
 
 function processUserInput(transcription, isFinal, stability) {
@@ -163,7 +183,6 @@ function isSpeechCommand(text, isFinal){
 }
 
 $(document).keydown(function(e){
-    console.log(e.key);
     switch(e.key) {
         
         case 'ArrowLeft':
