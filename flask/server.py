@@ -64,6 +64,10 @@ def fetch_bug_form():
 def mainpage():
     return render_template("index.html")
 
+@app.route('/test')
+def testpage():
+    return render_template("test.html")
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

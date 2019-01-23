@@ -160,8 +160,10 @@ clearButton.addEventListener("click", clear);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
-saveButton.addEventListener("click", savePDF);
 
+$("#closeButton").click(function() {
+    $('#reviewModal').modal('toggle');
+})
 
 $("#submitButton").click(function() {
     submitFormButtonHandler();
@@ -275,6 +277,10 @@ function isFirstQuestion() {
 
 function isFinalQuestion() {
     return (ind === questions.length - 1)
+}
+
+function isReviewModalVisible() {
+    return ($('#reviewModal').is(':visible'))
 }
 
 

@@ -50,26 +50,6 @@ socket.on('transcription', function(data){
 
     }
 
-    //Make buttons disabled when client is still receiving results
-    if(!isFinal) {
-        $("#previousButton").prop("disabled", true);
-        $("#nextButton").prop("disabled", true);
-        $("#clearButton").prop("disabled", true);
-        $("#reviewButton").prop("disabled", true);
-    }
-    else {
-        if(!isFinalQuestion()) {
-            $("#nextButton").prop("disabled", false);
-        }
-        if(!isFirstQuestion()) {
-            $("#previousButton").prop("disabled", false);
-        }
-        
-        $("#clearButton").prop("disabled", false);
-        $("#reviewButton").prop("disabled", false);
-    }
-
-
 })
 
 function processUserInput(transcription, isFinal, stability) {
@@ -157,19 +137,19 @@ function isSpeechCommand(text, isFinal){
             return true;
 
         case 'review':
-            if(isFinal){
+            if(isFinal && isFinalQuestion()){
                 reviewForm()
             }
             return true;
 
-        case 'save':
-            if(isFinal){
-                savePDF();
+        case 'close':
+            if(isFinal && isReviewModalVisible()){
+                $("#closeButton").trigger('click');
             }
             return true;
 
         case 'submit':
-            if(isFinal) {
+            if(isFinal && isReviewModalVisible()) {
                 $("#submitButton").trigger('click');
             }
             return true;

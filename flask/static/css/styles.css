@@ -11,21 +11,24 @@ body {
 .content {
 }
 
-.buttons {
+/* .buttons {
     position: sticky;
-}
+} */
 
-
-#previousButton {
+#clearButton, #previousButton, #reviewButton, #nextButton {
     margin-top: 15px;
 }
 
-#nextButton {
-    margin-top: 15px;
+#clearButton {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#buttons-container {
+    width: 100%;
 }
 
 #reviewButton {
-    margin-top: 15px;
     display: none;
 }
 
@@ -46,7 +49,7 @@ img {
     background-color: white;
 }
 #transcription:focus {
-    border: 1px solid green;
+    border: 1.5px solid green;
 }
 
 #question {
