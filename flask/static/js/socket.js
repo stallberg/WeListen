@@ -158,7 +158,7 @@ function isSpeechCommand(text, isFinal){
 
         case 'review':
             if(isFinal){
-                $("#reviewButton").trigger('click');
+                reviewForm()
             }
             return true;
 

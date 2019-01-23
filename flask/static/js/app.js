@@ -116,6 +116,8 @@ function reviewForm() {
     $("#form-review-body").empty();
     $("#form-review-body").append(reviewOutput);
 
+    $('#reviewModal').modal('toggle')
+
 
 };
 
