@@ -1,8 +1,14 @@
+//Socketio connection depending on if local development
+// or for cloud deployment
+let socket
 
-//const socket = io.connect('http://' + document.domain);
+if(location.port === "8000") {
+    socket = io.connect('http://localhost:3000');
+}
 
-//use this one for local development
-const socket = io.connect('http://localhost:3000');
+else {
+    socket = io.connect('http://' + document.domain);
+}
 
 let transcriptionField = document.getElementById("transcription");
 let checkboxCanChange = true;
