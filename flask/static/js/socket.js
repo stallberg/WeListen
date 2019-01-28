@@ -7,7 +7,7 @@ if(location.port === "8000") {
 }
 
 else {
-    socket = io.connect('http://' + document.domain);
+    socket = io.connect('https://' + document.domain);
 }
 
 let transcriptionField = document.getElementById("transcription");
