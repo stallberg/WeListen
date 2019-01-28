@@ -8,6 +8,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    volumes:
+      - /etc/letsencrypt/live/welisten.macister.fi:/etc/letsencrypt/live/welisten.macister.fi
     networks:
       - welisten
 
