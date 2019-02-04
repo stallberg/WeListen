@@ -365,6 +365,5 @@ let ind = 0;
         setTimeout( function() {
             playTTS() 
         }, 500);
-        
     })
 
