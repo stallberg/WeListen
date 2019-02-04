@@ -15,7 +15,7 @@ body {
     position: sticky;
 } */
 
-#clearButton, #previousButton, #reviewButton, #nextButton {
+#clearButton, #previousButton, #reviewButton, #nextButton, #saveButton {
     margin-top: 15px;
 }
 
