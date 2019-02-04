@@ -99,18 +99,43 @@ var nextQuestion = function(){
     setTimeout(function(){ playTTS() }, 400);
 };
 
+// to a specific question after review
+var toQuestion = function(index){
+    ind = index
+    $('#reviewModal').modal('toggle');
+    socket.emit('restart_stream', '');
+    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds   
+    updateProgressBar();
+    console.log(questions[ind].answer)
+    renderQuestion(questions[ind])
+    messageOutput.innerHTML = "";
+
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+    reviewButton.disabled = true;
+    saveButton.style.display = "inline-block";
+    reviewButton.style.display = "none";
+    nextButton.style.display = "none"; 
+    previousButton.style.display = "none";
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
+};
+
 // review form
 function reviewForm() {
     saveAnswer() //Save last answer
     let reviewOutput = "";
+    let questionButton = "";
 
     for(let i = 0; i < questions.length; i++) {
+        reviewOutput+= `<h5>${i+1}. ${questions[i].question}<button onclick="toQuestion(${i})"class="edit-button"> <i class="fa fa-pencil"></i></button></h5>`
         if(questions[i].answer.length === 0) {
-            reviewOutput+= `<h5>${questions[i].question}</h5><p>Question not answered.</p><br>`;   
+            reviewOutput+= `<p>Question not answered.</p><br>`;   
         }
         else {
-            reviewOutput+= `<h5>${questions[i].question}</h5><p>${questions[i].answer}</p><br>`;
-        }
+            reviewOutput+= `<p>${questions[i].answer}</p><br>`;
+        } 
     }
 
     $("#form-review-body").empty();
@@ -120,6 +145,26 @@ function reviewForm() {
 
 
 };
+
+//save after editing
+function saveEdit(){
+    socket.emit('restart_stream', '');
+    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
+    saveAnswer();
+    ind = questions.length-1;
+    updateProgressBar();
+    renderQuestion(questions[ind])
+
+    saveButton.style.display = "none";
+    previousButton.style.display = "inline-block";
+    previousButton.disabled = false;
+    messageOutput.innerHTML = "<h5>You reached the final question.</h5>";
+    nextButton.disabled = true;
+    nextButton.style.display = "none";
+    reviewButton.style.display = "inline-block";
+    reviewButton.disabled = false;
+    reviewForm()
+}
 
 //savePDF()
 function savePDF(){
@@ -160,6 +205,7 @@ clearButton.addEventListener("click", clear);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
+saveButton.addEventListener("click", saveEdit);
 
 $("#closeButton").click(function() {
     $('#reviewModal').modal('toggle');
@@ -281,6 +327,10 @@ function isFinalQuestion() {
 
 function isReviewModalVisible() {
     return ($('#reviewModal').is(':visible'))
+}
+
+function isSaveButtonVisible() {
+    return ($('#saveButton').is(':visible'))
 }
 
 

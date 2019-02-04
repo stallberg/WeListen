@@ -28,6 +28,7 @@ const speechCommands = [
     'low',
     'crash',
     'error code',
+    'edit question',
 ]
 
 const request = {

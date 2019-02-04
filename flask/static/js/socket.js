@@ -159,6 +159,23 @@ function isSpeechCommand(text, isFinal){
                 $("#submitButton").trigger('click');
             }
             return true;
+        
+        case 'save':
+            if(isFinal && isSaveButtonVisible()) {
+                $("#saveButton").trigger('click');
+            }
+            return true;
+        
+        case (command.match(/edit question [0-9]/) || {}).input:
+            if(isFinal &&  isReviewModalVisible()) {
+                temp = command.split(" ")
+                index = temp[temp.length-1]
+                if (index > questions.length || index < 1){
+                    return true
+                }
+                toQuestion(index-1)
+            }
+            return true;
             
             
         default:
@@ -172,15 +189,17 @@ $(document).keydown(function(e){
     switch(e.key) {
         
         case 'ArrowLeft':
-            previousQuestion();
-            break;
+            if (!isSaveButtonVisible() && !isReviewModalVisible()){
+                previousQuestion();
+                break;
+            }
         case 'ArrowRight':
+        if (!isSaveButtonVisible() && !isReviewModalVisible()){
             nextQuestion();
             break;
-        
+        }
         case 'ArrowDown':
             socket.emit('restart_stream', '');
-
         default: return;
     }
 

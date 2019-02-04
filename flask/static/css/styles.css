@@ -77,5 +77,15 @@ img {
     margin-bottom: 7%;
 }
 
+.edit-button {
+    background: none;
+    border: 0;
+    border-color: none;
+    border-style: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    display: inline-block;
+}
 
 
