@@ -86,6 +86,7 @@ img {
     overflow: hidden;
     outline: none;
     display: inline-block;
+    margin-left: 10px;
 }
 
 
