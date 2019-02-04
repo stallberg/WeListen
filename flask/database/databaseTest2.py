@@ -18,6 +18,7 @@ populateAnswerType()
 
 form =  {
             'name': "TestForm 1",
+            'description': "This is a test form",
             'questions': [            
                 {
                     'question': "How old are you?", 

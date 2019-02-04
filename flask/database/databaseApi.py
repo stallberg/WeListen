@@ -1,4 +1,4 @@
-from database import DBForm, DBQuestion, DBAnswerType, DBStringOption, DBRangeOption
+from database import DBForm, DBQuestion, DBAnswerType, DBStringOption, DBRangeOption, DBAnswer, DBAnswerString, DBAnswerInt, DBAnswerDate, DBAnswerTime
 from database import engine
 
 from sqlalchemy.orm import sessionmaker
@@ -20,8 +20,8 @@ class DBApi:
         # FIXME: There's more to do here, exception handling, rollback, ... 
  
  
-    def createForm(self, name):
-        form = DBForm(name = name)
+    def createForm(self, name, description):
+        form = DBForm(name = name, description = description)
         self.session.add(form)
         return form
          
@@ -62,7 +62,7 @@ class DBApi:
         return newQuestion
 
     def storeForm(self, form):
-        newForm=self.createForm(form['name'])
+        newForm=self.createForm(form['name'], form['description'])
         for question in form['questions']:
             answerType=self.session.query(DBAnswerType).filter(DBAnswerType.description==question['answerType'])[0]
             newQuestion=self.createQuestion(question=question['question'], answerType=answerType, orderIndex=question['orderIndex'])
@@ -80,6 +80,31 @@ class DBApi:
 
     def retrieveForm(self, id):
         return self.session.query(DBForm).filter(DBForm.id == id).first().asDict()
+
+    def createAnswer(self, uid):
+        answer = DBAnswer(uid=uid)
+        self.session.add(answer)
+        return answer
+
+    def createAnswerString(self, answer):
+        answerString = DBAnswerString(answer=answer)
+        self.session.add(answerString)
+        return answer
+
+    def createAnswerInt(self, answer):
+        answerInt = DBAnswerInt(answer=answer)
+        self.session.add(answerInt)
+        return answer
+
+    def createAnswerDate(self, answer):
+        answerDate = DBAnswerDate(answer=answer)
+        self.session.add(answerDate)
+        return answer
+
+    def createAnswerTime(self, answer):
+        answerTime = DBAnswerTime(answer=answer)
+        self.session.add(answerTime)
+        return answer
 
 dbApi = DBApi()
 
