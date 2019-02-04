@@ -2,7 +2,7 @@ from google.cloud import texttospeech
 import os
 import uuid
 
-def text_to_speech(text_input):
+def text_to_speech(text_input, filename):
 
     # Instantiates a client
     client = texttospeech.TextToSpeechClient()
@@ -24,8 +24,11 @@ def text_to_speech(text_input):
     unique_filename = str(uuid.uuid4().hex) + '.mp3'
     save_path = folder + unique_filename
 
+    test = filename + '.mp3'
+    print(test)
+
     
-    with open('audio_files/test.mp3', 'wb') as out:
+    with open(test, 'wb') as out:
         out.write(response.audio_content)
         #print('Audio content written to file %s'%(unique_filename))
     

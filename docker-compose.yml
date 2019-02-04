@@ -1,0 +1,33 @@
+version: '3'
+services:
+  nginx:
+    #image: nginx
+    build:
+      context: nginx/
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    networks:
+      - welisten
+
+  flask:
+    build:
+      context: flask/
+    container_name: flask
+    expose: [8000]
+    networks: 
+      - welisten
+
+  node:
+    build:
+      context: node/
+    container_name: node
+    expose: [3000]
+    networks: 
+      - welisten
+
+networks: 
+  welisten:

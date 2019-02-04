@@ -1,3 +1,5 @@
 service_account_key.json
 .env
 node/node_modules
+node/service_account_key.json
+flask/service_account_key.json

@@ -1,6 +1,8 @@
 
 var io = require('socket.io')(3000);
 
+console.log("Starting socket-io server...");
+
 // Imports the Google Cloud client library
 const speech = require('@google-cloud/speech').v1p1beta1;
 // Creates a client
@@ -26,6 +28,7 @@ const speechCommands = [
     'low',
     'crash',
     'error code',
+    'edit question',
 ]
 
 const request = {

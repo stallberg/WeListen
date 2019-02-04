@@ -12,10 +12,10 @@ let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
 
-let updateProgressBar = function(index) {
-    let percentage = ((index+1) / questions.length)*100
+let updateProgressBar = function() {
+    let percentage = ((ind+1) / questions.length)*100
     $(".progress-bar").css("width", `${percentage}%`);
-    $(".progress-bar").html(`${index+1}/${questions.length}`);
+    $(".progress-bar").html(`${ind+1}/${questions.length}`);
 };
 
 let saveAnswer = function(){
@@ -56,7 +56,7 @@ var previousQuestion = function(){
     if(ind === 0) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind--;
-    updateProgressBar(ind);
+    updateProgressBar();
     renderQuestion(questions[ind]);
 
     if (ind !== 0){
@@ -68,6 +68,9 @@ var previousQuestion = function(){
     else{
         previousButton.disabled = true;
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // next function (needs refactoring)
@@ -76,7 +79,7 @@ var nextQuestion = function(){
     if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind++;
-    updateProgressBar(ind);
+    updateProgressBar();
     renderQuestion(questions[ind])
 
     if (ind < questions.length-1){
@@ -91,27 +94,78 @@ var nextQuestion = function(){
         reviewButton.style.display = "inline-block";
         nextButton.style.display = "none";
     }
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
+};
+
+// to a specific question after review
+var toQuestion = function(index){
+    ind = index
+    $('#reviewModal').modal('toggle');
+    socket.emit('restart_stream', '');
+    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds   
+    updateProgressBar();
+    console.log(questions[ind].answer)
+    renderQuestion(questions[ind])
+    messageOutput.innerHTML = "";
+
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+    reviewButton.disabled = true;
+    saveButton.style.display = "inline-block";
+    reviewButton.style.display = "none";
+    nextButton.style.display = "none"; 
+    previousButton.style.display = "none";
+
+    //Text to speech
+    setTimeout(function(){ playTTS() }, 400);
 };
 
 // review form
 function reviewForm() {
+    stopTTS()   // stop playing the text-to-speech
     saveAnswer() //Save last answer
     let reviewOutput = "";
+    let questionButton = "";
 
     for(let i = 0; i < questions.length; i++) {
+        reviewOutput+= `<h5>${i+1}. ${questions[i].question}<button onclick="toQuestion(${i})"class="edit-button"> <i class="fa fa-pencil"></i></button></h5>`
         if(questions[i].answer.length === 0) {
-            reviewOutput+= `<h5>${questions[i].question}</h5><p>Question not answered.</p><br>`;   
+            reviewOutput+= `<p>Question not answered.</p><br>`;   
         }
         else {
-            reviewOutput+= `<h5>${questions[i].question}</h5><p>${questions[i].answer}</p><br>`;
-        }
+            reviewOutput+= `<p>${questions[i].answer}</p><br>`;
+        } 
     }
 
     $("#form-review-body").empty();
     $("#form-review-body").append(reviewOutput);
 
+    $('#reviewModal').modal('toggle')
+
 
 };
+
+//save after editing
+function saveEdit(){
+    socket.emit('restart_stream', '');
+    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
+    saveAnswer();
+    ind = questions.length-1;
+    updateProgressBar();
+    renderQuestion(questions[ind])
+
+    saveButton.style.display = "none";
+    previousButton.style.display = "inline-block";
+    previousButton.disabled = false;
+    messageOutput.innerHTML = "<h5>You reached the final question.</h5>";
+    nextButton.disabled = true;
+    nextButton.style.display = "none";
+    reviewButton.style.display = "inline-block";
+    reviewButton.disabled = false;
+    reviewForm()
+}
 
 //savePDF()
 function savePDF(){
@@ -134,9 +188,11 @@ function submitFormButtonHandler() {
     setTimeout(function() {
         $("#formSubmittedModal").modal('hide')
         ind = 0;
-        updateProgressBar(ind);
+        updateProgressBar();
+
         // Show first question and empty answers
-        questions = createEmptyAnswers(); //just for demo
+        questions = resetAllAnswers(questions);
+
         renderQuestion(questions[ind]);
         messageOutput.innerHTML = "";
         nextButton.disabled = false;
@@ -150,8 +206,11 @@ clearButton.addEventListener("click", clear);
 previousButton.addEventListener("click", previousQuestion);
 nextButton.addEventListener("click", nextQuestion);
 reviewButton.addEventListener("click", reviewForm);
-saveButton.addEventListener("click", savePDF);
+saveButton.addEventListener("click", saveEdit);
 
+$("#closeButton").click(function() {
+    $('#reviewModal').modal('toggle');
+})
 
 $("#submitButton").click(function() {
     submitFormButtonHandler();
@@ -246,117 +305,66 @@ function clearMultipleChoiceContainer() {
     $("#multiple-choice-container").empty()
 }
 
-/*
-//Test form for building UI
-var form = {
-    name: 'Test form',
-    questions: [
-        {
-            question: "What is your vehicle's make and model?",
-            answerType : 'str',
-            answer: '',
-        },
+function resetAllAnswers(questions) {
 
-        {
-            question: "What was the place of accident?",
-            answerType : 'str',
-            answer: '',
-        },
-        {
-            question: "What is your gender?",
-            answerType: 'multi',
-            options: [
-                {
-                    description: 'Male'
-                },
-                {
-                    description: 'Female'
-                }
-            ],
-            answer: '',
-        },
-        {
-            question: "Checkbox question",
-            answerType : 'checkbox',
-            options: [
-                {description: 'Hello'},
-                {description: 'Goodbye'},
-                {description: 'Test'},
-            ],
-            answer: [],
+    for(let i = 0; i < questions.length; i++) {
+        if (questions[i].answerType === 'checkbox') {
+            questions[i].answer = []
         }
-    ]
-}
-*/
-
-function createEmptyAnswers() {
-    let form = fetchForm();
-    return form.questions;
-}
-
-
- function fetchForm() {
-
-     //For demo purposes/testing
-     let form = {
-        name: 'Defect Report Form',
-        questions: [
-            {
-                question: "Please specify the title of the error",
-                answerType : 'str',
-                answer: '',
-            },
-    
-            {
-                question: "Which platform(s) are you using?",
-                answerType : 'checkbox',
-                options: [
-                    {description: 'Desktop'},
-                    {description: 'Mobile'},
-                    {description: 'Tablet'},
-                ],
-                answer: [],
-            },
-    
-            {
-                question: "Please describe the error details",
-                answerType : 'str',
-                answer: '',
-            },
-    
-            {
-                question: "What is the severity of the error?",
-                answerType: 'multi',
-                options: [
-                    {
-                        description: 'High'
-                    },
-                    {
-                        description: 'Medium'
-                    },
-                    {
-                        description: 'Low'
-                    }
-                ],
-                answer: '',
-            }
-        ]
+        else {
+            questions[i].answer = ''
+        }
     }
-    return form
- }
+    return questions
+}
+
+function isFirstQuestion() {
+    return (ind === 0)
+}
+
+function isFinalQuestion() {
+    return (ind === questions.length - 1)
+}
+
+function isReviewModalVisible() {
+    return ($('#reviewModal').is(':visible'))
+}
+
+function isSaveButtonVisible() {
+    return ($('#saveButton').is(':visible'))
+}
+
 
 //Question form for demo
-var form = fetchForm()
-
+var form
 
 //array of all questions
-var questions = form.questions;
+var questions
 
-//question counter
+//current question index
 let ind = 0;
 
-//initialize progressbar on page load
-updateProgressBar(ind);
 
-// Show first question
-renderQuestion(questions[ind]);
+// TODO: FIX PROPERLY
+/* TESTING FORM FETCH */ 
+ fetch('./bug-report.json')
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function(json){
+        form = json
+        questions = form.questions
+
+        //initialize progressbar
+        updateProgressBar()
+
+        // Show first question
+        renderQuestion(questions[ind]);
+
+        // Play tts for first question, small timeout so it doesn't start immediately
+        setTimeout( function() {
+            playTTS() 
+        }, 500);
+        
+    })
+

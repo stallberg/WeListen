@@ -1,12 +1,18 @@
+//Socketio connection depending on if local development
+// or for cloud deployment
+let socket
 
-//const socket = io.connect('http://' + document.domain + ':' + location.port);
+if(location.port === "8000") {
+    socket = io.connect('http://localhost:3000');
+}
 
-//use this one for local development
-const socket = io.connect('http://localhost:3000');
+else {
+    socket = io.connect('https://' + document.domain);
+}
 
 let transcriptionField = document.getElementById("transcription");
 let checkboxCanChange = true;
-
+let isTalking = false;
 
 //For recording audio from user's microphone
 navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:true})
@@ -40,8 +46,7 @@ let currentFinal = "";
 socket.on('transcription', function(data){
     let isFinal = data.results[0].isFinal;
     let transcription = data.results[0].alternatives[0].transcript;
-    let stability = data.results[0].stability;
-    
+    let stability = data.results[0].stability;    
 
     if(isSpeechCommand(transcription, isFinal) === false){
         console.log("not a command");
@@ -50,6 +55,7 @@ socket.on('transcription', function(data){
 
 
     }
+
 })
 
 function processUserInput(transcription, isFinal, stability) {
@@ -137,20 +143,37 @@ function isSpeechCommand(text, isFinal){
             return true;
 
         case 'review':
-            if(isFinal){
-                $("#reviewButton").trigger('click');
+            if(isFinal && isFinalQuestion()){
+                reviewForm()
             }
             return true;
 
-        case 'save':
-            if(isFinal){
-                savePDF();
+        case 'close':
+            if(isFinal && isReviewModalVisible()){
+                $("#closeButton").trigger('click');
             }
             return true;
 
         case 'submit':
-            if(isFinal) {
+            if(isFinal && isReviewModalVisible()) {
                 $("#submitButton").trigger('click');
+            }
+            return true;
+        
+        case 'save':
+            if(isFinal && isSaveButtonVisible()) {
+                $("#saveButton").trigger('click');
+            }
+            return true;
+        
+        case (command.match(/edit question [0-9]/) || {}).input:
+            if(isFinal &&  isReviewModalVisible()) {
+                temp = command.split(" ")
+                index = temp[temp.length-1]
+                if (index > questions.length || index < 1){
+                    return true
+                }
+                toQuestion(index-1)
             }
             return true;
             
@@ -163,19 +186,20 @@ function isSpeechCommand(text, isFinal){
 }
 
 $(document).keydown(function(e){
-    console.log(e.key);
     switch(e.key) {
         
         case 'ArrowLeft':
-            previousQuestion();
-            break;
+            if (!isSaveButtonVisible() && !isReviewModalVisible()){
+                previousQuestion();
+                break;
+            }
         case 'ArrowRight':
+        if (!isSaveButtonVisible() && !isReviewModalVisible()){
             nextQuestion();
             break;
-        
+        }
         case 'ArrowDown':
             socket.emit('restart_stream', '');
-
         default: return;
     }
 
