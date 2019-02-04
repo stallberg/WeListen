@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WeListen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Material design bootstrap -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Own styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+
+</head>
+
+<body>
+
+    <div id="header">
+        <h1 id="header-text"><a href="./">WeListen</a></h1>
+    </div>
+
+    <div class="container">
+        
+        <div class="content">
+                
+                <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h1 id="form-title">Bug Report Form</h1>
+   
+
+            <!-- <img id="logo" src="/static/img/logo_light.jpg" alt="WeListen Logo" /> -->
+
+            <h3 id="question"></h3>
+
+
+            <div class ="form-group shadow-textarea" id="normal-answer-container">
+                <textarea class="form-control z-depth-1" rows="6" id="transcription" readonly></textarea>
+            </div>
+
+            <div id="multiple-choice-container">
+                <!-- Options are rendered directly in js -->
+
+            </div>
+        </div>
+        <div id="buttons-container">
+            <button id="previousButton" class="btn btn-primary btn-md">Previous</button>
+            <button id="clearButton" class="btn btn-danger btn-md">Clear</button>
+            <button id="nextButton" class="btn btn-primary btn-md">Next</button>
+            <button id="reviewButton" class="btn btn-primary btn-md">Review</button>
+            <button id="saveButton" class="btn btn-success btn-md" style="display:none;">Save</button>
+            <br>
+            <h5 id="messageOutput"></h5>
+            
+            <br>
+        </div>
+    </div>
+
+
+  
+  <!-- Modal for form review -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="reviewModalLabel">Bug Report Summary</h4> <!-- Hardcoded for demo -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id ="form-review-body" class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button id="closeButton" class="btn btn-danger">Close</button>
+          <button id="submitButton" type="button" class="btn btn-success" style="margin-left:10px;" data-dismiss="modal" data-toggle="modal" data-target="#formSubmittedModal">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+
+
+
+
+
+    <!-- Success modal for submitting form -->
+    <div class="modal fade" id="formSubmittedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-success" role="document">
+    <!--Content-->
+    <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header">
+        <p class="heading lead">Success</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+        </div>
+
+        <!--Body-->
+        <div class="modal-body">
+        <div class="text-center">
+            <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+            <p>The form has been submitted.</p>
+        </div>
+        </div>
+
+    </div>
+    </div>
+
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"
+            integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.15/js/mdb.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/tts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/socket.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+</body>
+</html>

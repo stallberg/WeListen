@@ -124,6 +124,7 @@ var toQuestion = function(index){
 
 // review form
 function reviewForm() {
+    stopTTS()   // stop playing the text-to-speech
     saveAnswer() //Save last answer
     let reviewOutput = "";
     let questionButton = "";
@@ -344,8 +345,9 @@ var questions
 let ind = 0;
 
 
+// TODO: FIX PROPERLY
 /* TESTING FORM FETCH */ 
- fetch('./bug-report')
+ fetch('./bug-report.json')
     .then(function(response) {
         return response.json()
     })
@@ -359,8 +361,10 @@ let ind = 0;
         // Show first question
         renderQuestion(questions[ind]);
 
-        // Play tts for first question
-        playTTS()
+        // Play tts for first question, small timeout so it doesn't start immediately
+        setTimeout( function() {
+            playTTS() 
+        }, 500);
         
     })
 

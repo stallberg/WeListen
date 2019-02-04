@@ -55,18 +55,20 @@ def test():
     }
     return form
 
-@app.route('/bug-report')
-def fetch_bug_form():
-    form = test()
-    return jsonify(form)
 
+# TODO: Create proper routes and fetch stuff from database
 @app.route('/')
 def mainpage():
     return render_template("index.html")
 
-@app.route('/test')
-def testpage():
-    return render_template("test.html")
+@app.route('/bug-report')
+def bugform():
+    return render_template("form.html")
+
+@app.route('/bug-report.json')
+def fetch_bug_form():
+    form = test()
+    return jsonify(form)
 
 
 if __name__ == '__main__':
