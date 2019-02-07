@@ -41,6 +41,10 @@ img {
     margin-top: 1%;
 }
 
+.muted {
+    opacity: 0.25;
+}
+
 #transcription {
     width: 50%;
     margin-left: auto;
@@ -95,12 +99,16 @@ img {
     background-color: #111111;
     /* box-shadow: 5px 0px 15px #c3c3c3; */
     margin-bottom: 1.5%;
-
 }
 
 #header-text {
     margin-left: 3%;
     color:white;
+}
+
+#header-menu {
+    float: right;
+    padding-right: 3%;
 }
 
 #form-title {

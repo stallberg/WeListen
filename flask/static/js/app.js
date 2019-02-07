@@ -183,6 +183,17 @@ function savePDF(){
     doc.save('test.pdf');
 };
 
+//vc toggle
+function toggleVoiceCommandsHandler(){
+    $("#toggleVoiceCommands").toggleClass("muted");
+}
+
+
+//tts toggle
+function toggleTextToSpeechHandler(){
+    $("#toggleTextToSpeech").toggleClass("muted");
+}
+
 //Auto closes the modal on successful submit after 1,5s
 function submitFormButtonHandler() {
     setTimeout(function() {
@@ -216,6 +227,13 @@ $("#submitButton").click(function() {
     submitFormButtonHandler();
 })
 
+$("#toggleVoiceCommands").click(function() {
+    toggleVoiceCommandsHandler();
+})
+
+$("#toggleTextToSpeech").click(function() {
+    toggleTextToSpeechHandler();
+})
 
 // initialize buttons as disabled
 //saveButton.disabled = true;
