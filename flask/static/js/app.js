@@ -11,6 +11,9 @@ let multipleChoiceContainer = document.getElementById("multiple-choice-container
 let normalAnswerContainer = document.getElementById("normal-answer-container");
 let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 
+//boolean for controlling text-to-speech functionality
+let ttsEnabled = true;
+
 
 let updateProgressBar = function() {
     let percentage = ((ind+1) / questions.length)*100
@@ -189,8 +192,16 @@ function toggleVoiceCommandsHandler(){
 }
 
 
-//tts toggle
+//Text-to-speech toggle handler
 function toggleTextToSpeechHandler(){
+    ttsEnabled = !ttsEnabled;
+    if(!ttsEnabled) {
+        stopTTS();
+    }
+    else {
+        playTTS();
+    }
+    
     $("#toggleTextToSpeech").toggleClass("muted");
 }
 

@@ -3,13 +3,16 @@
 
 let audio = document.createElement('audio')
 
-function playTTS() {      
-    let url = questions[ind].audio
-    audio.pause()
-    audio.setAttribute('src', url)
-    audio.play();   
+function playTTS() {
+    if(ttsEnabled){
+        let url = questions[ind].audio
+        audio.pause()
+        audio.setAttribute('src', url)
+        audio.play();   
+    }   
 }
 
 function stopTTS() {
     audio.pause()
+    audio.currentTime = 0;
 }
