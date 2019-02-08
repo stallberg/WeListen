@@ -7,8 +7,6 @@ RUN apt-get update \
 RUN groupadd docker -g 999 \
     && usermod -aG docker jenkins
 
-
-
 USER jenkins
 ENV JENKINS_OPTS --httpPort=8080 --prefix=/jenkins
 EXPOSE 8080
