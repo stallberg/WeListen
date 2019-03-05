@@ -23,7 +23,7 @@ let updateProgressBar = function() {
 
 let saveAnswer = function(){
 
-    if(questions[ind].answerType === 'multi') {
+    if(questions[ind].answerType === 'single') {
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 if(element.checked) {
@@ -34,7 +34,7 @@ let saveAnswer = function(){
     }
 
     //store checkbox answers in array?
-    if(questions[ind].answerType === 'checkbox') {
+    if(questions[ind].answerType === 'multi') {
         let answers = []
         $(".custom-checkbox").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
@@ -209,18 +209,23 @@ function toggleTextToSpeechHandler(){
 function submitFormButtonHandler() {
     setTimeout(function() {
         $("#formSubmittedModal").modal('hide')
-        ind = 0;
-        updateProgressBar();
+        
+        //Redirect to the form index page
+        document.location.href="/";
+        
+        // ind = 0;
+        // updateProgressBar();
 
-        // Show first question and empty answers
-        questions = resetAllAnswers(questions);
+        // // Show first question and empty answers
+        // questions = resetAllAnswers(questions);
 
-        renderQuestion(questions[ind]);
-        messageOutput.innerHTML = "";
-        nextButton.disabled = false;
-        reviewButton.style.display = "none";
-        nextButton.style.display = "inline-block";
-        previousButton.disabled = true;
+        // renderQuestion(questions[ind]);
+        // messageOutput.innerHTML = "";
+        // nextButton.disabled = false;
+        // reviewButton.style.display = "none";
+        // nextButton.style.display = "inline-block";
+        // previousButton.disabled = true;
+
     }, 1500);
 }
 
@@ -257,7 +262,7 @@ function renderQuestion(question) {
 
 
     //For multiple choice, hide the normal user input area
-    if(question.answerType === 'multi') {
+    if(question.answerType === 'single') {
         multipleChoiceContainer.style.display = "block";
         normalAnswerContainer.style.display = "none";
         renderMultipleChoiceQuestions(question);
@@ -265,7 +270,7 @@ function renderQuestion(question) {
 
     }
 
-    else if(question.answerType === 'checkbox') {
+    else if(question.answerType === 'multi') {
         multipleChoiceContainer.style.display = "block";
         normalAnswerContainer.style.display = "none";
         renderCheckboxQuestions(question);
@@ -280,9 +285,9 @@ function renderQuestion(question) {
 
 }
 
-function renderMultipleChoiceQuestions({options}) {
+function renderMultipleChoiceQuestions({stringOptions}) {
     clearMultipleChoiceContainer();
-    options.forEach(function(option, index) {
+    stringOptions.forEach(function(option, index) {
 
         $("#multiple-choice-container")
             .append( `<div class="custom-control custom-radio">
@@ -304,9 +309,9 @@ function renderMultipleChoiceQuestions({options}) {
 }
 
 
-function renderCheckboxQuestions({options}) {
+function renderCheckboxQuestions({stringOptions}) {
     clearMultipleChoiceContainer();
-    options.forEach(function(option, index) {
+    stringOptions.forEach(function(option, index) {
 
         $("#multiple-choice-container")
             .append( `<div class="custom-control custom-checkbox">
@@ -323,10 +328,9 @@ function renderCheckboxQuestions({options}) {
                 if(answer === element.value){
                     element.checked = true
                 }
-            })
-            
+            })   
         })
-    })
+    }) 
 }
 
 //Empties all child elements under the container, used for both radio and checkbox
@@ -337,7 +341,7 @@ function clearMultipleChoiceContainer() {
 function resetAllAnswers(questions) {
 
     for(let i = 0; i < questions.length; i++) {
-        if (questions[i].answerType === 'checkbox') {
+        if (questions[i].answerType === 'multi') {
             questions[i].answer = []
         }
         else {
@@ -376,13 +380,15 @@ let ind = 0;
 
 // TODO: FIX PROPERLY
 /* TESTING FORM FETCH */ 
- fetch('./bug-report.json')
+ fetch('./json/')
     .then(function(response) {
         return response.json()
     })
     .then(function(json){
         form = json
         questions = form.questions
+
+        questions = resetAllAnswers(questions)
 
         //initialize progressbar
         updateProgressBar()

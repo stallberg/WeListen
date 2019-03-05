@@ -119,4 +119,17 @@ img {
 
 a { color: inherit; } 
 
+/* Temp fix to not have the modal cover the header. TODO: find better solution */
+#commandsModal {
+    top: 10%;
+}
 
+#commandsButton {
+    display: inline-block;
+}
+
+/* Override bootstrap rules */
+ul li {
+    padding-bottom: 15px !important;
+    padding-top: 0px !important;
+}

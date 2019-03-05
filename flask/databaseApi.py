@@ -1,13 +1,15 @@
 from database import DBForm, DBQuestion, DBAnswerType, DBStringOption, DBRangeOption, DBAnswer, DBAnswerString, DBAnswerInt, DBAnswerDate, DBAnswerTime
 from database import engine
+from text_to_speech.tts import create_TTS_URL
 
 from sqlalchemy.orm import sessionmaker
 
 Session = sessionmaker(bind=engine)
 
 class DBApi:
-    session = Session()     
 
+    def __init__(self):
+        self.session = Session() 
     
     def perform(self, callback):
         
@@ -24,9 +26,14 @@ class DBApi:
         form = DBForm(name = name, description = description)
         self.session.add(form)
         return form
-         
+
+    #Return list of all the forms as dictionary objects. Used to render the forms on the index page.
     def getForms(self):
-        return self.session.query(DBForm)
+        forms = []
+        for form in self.session.query(DBForm).all():
+            forms.append(form.__dict__)
+        return forms
+        #return self.session.query(DBForm).all()
          
     def createAnswerType(self, description):
         answerType = DBAnswerType(description = description)
@@ -58,6 +65,7 @@ class DBApi:
             newQuestion.answerType = answerType
         if orderIndex != None:
             newQuestion.orderIndex = orderIndex
+
         self.session.add(newQuestion)
         return newQuestion
 
@@ -73,8 +81,14 @@ class DBApi:
                 for stringOption in question['stringOptions']:
                     newStringOption=self.createStringOption(value=stringOption['value'], description=stringOption['description'], orderIndex=stringOption['orderIndex'])
                     newQuestion.stringOptions.append(newStringOption)
-                    
-                    
+
+            #Send options as extra parameter if single/mutli type question
+            if 'stringOptions' in question:
+                newQuestion.audioUrl = create_TTS_URL(question['question'], question['stringOptions'])
+            else:
+                newQuestion.audioUrl = create_TTS_URL(question['question'], None)
+            
+
             newForm.questions.append(newQuestion)
         return newForm
 
@@ -106,5 +120,5 @@ class DBApi:
         self.session.add(answerTime)
         return answer
 
-dbApi = DBApi()
+#dbApi = DBApi()
 

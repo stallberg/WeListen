@@ -61,9 +61,9 @@ socket.on('transcription', function(data){
 function processUserInput(transcription, isFinal, stability) {
     let questionType = questions[ind].answerType;
 
-    if(questionType === 'multi') {
+    if(questionType === 'single') {
         transcription = transcription.replace(/^\s+/g, '').replace(/\.+$/, "");
-        questions[ind].options.forEach(function(option) {
+        questions[ind].stringOptions.forEach(function(option) {
             if(option.description.toLowerCase() === transcription.toLowerCase()){
                 
                 // custom-radio is the material design bootstrap class for radiobuttons
@@ -81,9 +81,9 @@ function processUserInput(transcription, isFinal, stability) {
     }
 
 
-    else if(questionType === 'checkbox') {
+    else if(questionType === 'multi') {
         transcription = transcription.replace(/^\s+/g, '').replace(/\.+$/, "");
-        questions[ind].options.forEach(function(option) {
+        questions[ind].stringOptions.forEach(function(option) {
             if(option.description.toLowerCase() === transcription.toLowerCase() && checkboxCanChange) {
 
                 $(".custom-checkbox").each(function(i, container) {
@@ -205,23 +205,20 @@ $(document).keydown(function(e){
 
 });
 
-//commands and command related functions
 
 function clear(){
-
     if(questions[ind].answerType === 'str'){
         transcriptionField.innerHTML = "";
         currentFinal = "";
     }
-    
-    if(questions[ind].answerType === 'checkbox'){
+
+    if(questions[ind].answerType === 'multi'){
         $(".custom-checkbox").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 element.checked = false;   
             });
         });
     }
-
 }
 
 //Auto scrolling behaviour of the transcription textarea field
@@ -231,9 +228,9 @@ $("#transcription").change(function() {
 
 
 
-// Helper functions
+//Audio capture helper functions
 
-  // 16kHz for GOOGLE CLOUD SPEECH
+// 16kHz for GOOGLE CLOUD SPEECH
 function downsampleBuffer(buffer, sampleRate, outSampleRate) {
     if (outSampleRate == sampleRate) {
         return buffer;

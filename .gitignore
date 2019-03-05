@@ -3,3 +3,5 @@ service_account_key.json
 node/node_modules
 node/service_account_key.json
 flask/service_account_key.json
+**/.welisten.db
+**/__pycache__

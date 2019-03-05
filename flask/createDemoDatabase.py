@@ -1,4 +1,8 @@
-from databaseApi import dbApi
+from databaseApi import DBApi
+
+from text_to_speech.tts import create_TTS_URL
+
+dbApi = DBApi()
 
 # answerType is always one of the following: int, str, bool, date, time, single, multi
 
@@ -18,24 +22,35 @@ populateAnswerType()
 
 form =  {
             'name': "Sample Questions for Car Insurance Claim",
-            'description': "A few questions for demonstrating how We Listen can be used for filling in insurance claim forms",
+            'description': "A few questions for demonstrating how WeListen can be used for filling in insurance claim forms",
             'questions': [            
                 {
                     'question': "How old are you?", 
                     'answerType': "str", 
-                    'orderIndex': 1
+                    'orderIndex': 1,
                 },
                 {
                     'question': "How many cars were involved in the accident?", 
-                    'answerType': "int", 
-                    'maxValue': 1000,
-                    'minValue': 1,
-                    'orderIndex': 2
+                    'answerType': "str", 
+                    'orderIndex': 2,
                 },
                 {
-                    'question': "Was your vechicle towed?", 
-                    'answerType': "bool", 
-                    'orderIndex': 3
+                    'question': "Was your vehicle towed?", 
+                    'answerType': "single", 
+                    'orderIndex': 3,
+                    'stringOptions': [
+                        {
+                            'description': "Yes",
+                            'value': 0,
+                            'orderIndex': 1,
+                        },
+                        {
+                            'description': "No",
+                            'value': 1,
+                            'orderIndex': 2,
+                            
+                        },
+                    ]
                 },
                 {
                     'question': "Please provide an explanation of the accident", 
@@ -54,12 +69,13 @@ newForm1()
 
 form =  {
             'name': "Sample Questions for a Bug Report",
-            'description': "A few questions for demonstrating how We Listen can be used for filling in a bug report form",
+            'description': "A few questions for demonstrating how WeListen can be used for filling in a bug report form",
             'questions': [            
                 {
                     'question': "Please specify the title of the error", 
                     'answerType': "str", 
-                    'orderIndex': 1
+                    'orderIndex': 1,
+                    
                 },
                 {
                     'question': "On which platforms do you experience the problem?", 
@@ -69,44 +85,47 @@ form =  {
                         {
                             'description': "Desktop",
                             'value': 0,
-                            'orderIndex': 1
+                            'orderIndex': 1,
                         },
                         {
                             'description': "Mobile",
                             'value': 1,
-                            'orderIndex': 2
+                            'orderIndex': 2,
                         },
                         {
                             'description': "Tablet",
                             'value': 2,
-                            'orderIndex': 3
+                            'orderIndex': 3,
                         }
                     ]
                 },
                 {
                     'question': "Please, give a detailed description of the error", 
                     'answerType': "str", 
-                    'orderIndex': 3
+                    'orderIndex': 3,
                 },
                 {
-                    'question': "On which platforms do you experience the problem?", 
+                    'question': "What is the severity of the error?", 
                     'answerType': "single", 
                     'orderIndex': 4,
                     'stringOptions': [
                         {
                             'description': "High",
                             'value': 0,
-                            'orderIndex': 1
+                            'orderIndex': 1,
+                            
                         },
                         {
                             'description': "Medium",
                             'value': 1,
-                            'orderIndex': 2
+                            'orderIndex': 2,
+                            
                         },
                         {
                             'description': "Low",
                             'value': 2,
-                            'orderIndex': 3
+                            'orderIndex': 3,
+                            
                         }
                     ]
                 }
@@ -122,14 +141,12 @@ newForm2()
 
 form =  {
             'name': "Sample Questions for Requesting Kilometre and Per Diem Allowance ",
-            'description': "A few questions for demonstrating how We Listen can be used for requesting kilometre and per diem allowance ",
+            'description': "A few questions for demonstrating how WeListen can be used for requesting kilometre and per diem allowance",
             'questions': [            
                 {
                     'question': "What was the length of the business trip in kilometres?", 
-                    'answerType': "int",
-                    'maxValue': 100000,
-                    'minValue': 1,
-                    'orderIndex': 1
+                    'answerType': "str",
+                    'orderIndex': 1,
                 },
                 {
                     'question': "Please specify the vehicle used for traveling ", 
@@ -139,22 +156,26 @@ form =  {
                         {
                             'description': "Car",
                             'value': 0,
-                            'orderIndex': 1
+                            'orderIndex': 1,
+
                         },
                         {
                             'description': "Car with trailer",
                             'value': 1,
-                            'orderIndex': 2
+                            'orderIndex': 2,
+
                         },
                         {
                             'description': "Motorcycle",
                             'value': 2,
-                            'orderIndex': 3
+                            'orderIndex': 3,
+
                         },
                         {
                             'description': "Snowmobile",
                             'value': 3,
-                            'orderIndex': 4
+                            'orderIndex': 4,
+
                         }
                     ]
                 },
@@ -162,28 +183,47 @@ form =  {
                     'question': "How long did your trip take?", 
                     'answerType': "single", 
                     'orderIndex': 3,
+
                     'stringOptions': [
                         {
                             'description': "Under 6 hours",
                             'value': 0,
-                            'orderIndex': 1
+                            'orderIndex': 1,
+
                         },
                         {
                             'description': "6 to 10 hours",
                             'value': 1,
-                            'orderIndex': 2
+                            'orderIndex': 2,
+
                         },
                         {
                             'description': "over 10 hours",
                             'value': 2,
-                            'orderIndex': 3
+                            'orderIndex': 3,
+
                         }
                     ]
                 },
                 {
                     'question': "Did you get a free meal or a meal paid for by the employer during the business trip? ", 
-                    'answerType': "bool", 
-                    'orderIndex': 4
+                    'answerType': "single", 
+                    'orderIndex': 4,
+
+                    'stringOptions': [
+                        {
+                            'description': "Yes",
+                            'value': 0,
+                            'orderIndex': 1,
+
+                        },
+                        {
+                            'description': "No",
+                            'value': 1,
+                            'orderIndex': 2,
+
+                        }
+                    ]
                 },
             ]
 }

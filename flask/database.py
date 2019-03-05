@@ -4,7 +4,10 @@ from sqlalchemy import Table, Column, Integer, String, Date, Time, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-engine = create_engine('sqlite:///welisten.db', echo=True)
+engine = create_engine('sqlite:///welisten.db',
+                        echo=True, 
+                        connect_args={'check_same_thread': False}
+                        )
 
 Base = declarative_base()
 
@@ -36,6 +39,9 @@ class DBQuestion(Base):
 
     orderIndex = Column(Integer)
 
+    #For text-to-speech
+    audioUrl = Column(String)
+
     stringOptions = relationship('DBStringOption', order_by='DBStringOption.orderIndex')
     rangeOptions = relationship("DBRangeOption")
     answers = relationship("DBAnswer")
@@ -46,7 +52,7 @@ class DBQuestion(Base):
         result['answerType'] = answerType
         if answerType == "int":
             result.update({'minValue': self.rangeOptions[0].minValue, 'maxValue': self.rangeOptions[0].maxValue})
-        elif answerType == "multi":
+        elif answerType == "multi" or answerType == "single":
             result['stringOptions']=[]
             for option in self.stringOptions:
                 result['stringOptions'].append(option.asDict())

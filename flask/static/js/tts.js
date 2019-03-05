@@ -5,7 +5,7 @@ let audio = document.createElement('audio')
 
 function playTTS() {
     if(ttsEnabled){
-        let url = questions[ind].audio
+        let url = questions[ind].audioUrl
         audio.pause()
         audio.setAttribute('src', url)
         audio.play();   
