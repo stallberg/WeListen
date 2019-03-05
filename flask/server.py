@@ -1,8 +1,5 @@
 from flask import Flask, request, render_template, jsonify
 
-#from sqlalchemy import create_engine
-#from sqlalchemy.orm import sessionmaker
-
 app = Flask(__name__)
 
 ##Just temporary to try request the form from the server
