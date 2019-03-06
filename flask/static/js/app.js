@@ -117,7 +117,7 @@ var toQuestion = function(index){
     reviewButton.disabled = true;
     saveButton.style.display = "inline-block";
     reviewButton.style.display = "none";
-    nextButton.style.display = "none"; 
+    nextButton.style.display = "none";
     previousButton.style.display = "none";
 
     //Text to speech
@@ -290,7 +290,7 @@ function renderMultipleChoiceQuestions({stringOptions}) {
 
         $("#multiple-choice-container")
             .append( `<div class="custom-control custom-radio">
-                        <input id=${index} type="radio" class="custom-control-input" name="radio" value=${option.description} />
+                        <input id=${index} type="radio" class="custom-control-input" name="radio" value="${option.description}" />
                         <label for=${index} class="custom-control-label">${option.description}</label>
                     </div>`
         );

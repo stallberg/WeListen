@@ -30,9 +30,9 @@ const speechCommands = [
     'yes',
     'no',
     'car',
-    'car with trailer',
+    'train',
+    'bus',
     'motorcycle',
-    'other',
     'Under 6 hours',
     '6 to 10 hours',
     'over 10 hours'
@@ -42,6 +42,7 @@ const request = {
     config: {
       encoding: encoding,
       sampleRateHertz: sampleRateHertz,
+      maxAlternatives: 5,
       languageCode: languageCode,
       enableAutomaticPunctuation: true,
       speechContexts: [{
@@ -62,7 +63,6 @@ const request = {
     });
 
     client.on('restart_stream', function (data) {
-        console.log("restarted");
         restartRecognitionStream(this);
     });
 
@@ -81,7 +81,7 @@ const request = {
         recognizeStream = speechClient.streamingRecognize(request)
             .on('error', (error) => {
                 if(error.message === 'Exceeded maximum allowed stream duration of 65 seconds.'){
-                    console.log("Exceeded stream duration of 65 seconds -> restarting stream");
+                    console.log("Exceeded stream duration of 65 seconds");
                     restartRecognitionStream(client);
                 }
                 else {
@@ -94,6 +94,7 @@ const request = {
                     (data.results[0] && data.results[0].alternatives[0])
                         ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
                         : `\n\nReached transcription time limit, please restart\n`);
+                
                 client.emit('transcription', data);
             });
     }
@@ -108,6 +109,7 @@ const request = {
     function restartRecognitionStream(client){
         stopRecognitionStream();
         startRecognitionStream(client, '');
+        console.log("restarted recognition stream");
     }
 
 });

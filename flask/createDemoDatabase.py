@@ -21,23 +21,35 @@ def populateAnswerType():
 populateAnswerType()
 
 form =  {
-            'name': "Sample Questions for Car Insurance Claim",
-            'description': "A few questions for demonstrating how WeListen can be used for filling in insurance claim forms",
+            'name': "Car Insurance Claim",
+            'description': "A few sample questions for demonstrating how WeListen can be used for filling in insurance claim forms",
             'questions': [            
                 {
-                    'question': "How old are you?", 
+                    'question': "How many cars were involved in the accident?", 
                     'answerType': "int",
                     'minValue': 1,
                     'maxValue': 100, 
                     'orderIndex': 1,
                 },
                 {
-                    'question': "How many cars were involved in the accident?", 
-                    'answerType': "int",
-                    'minValue': 1,
-                    'maxValue': 1000,
+                    'question': "Did you file a police report after the accident?", 
+                    'answerType': "single",
                     'orderIndex': 2,
+                    'stringOptions': [
+                        {
+                            'description': "Yes",
+                            'value': 0,
+                            'orderIndex': 1,     
+                        },
+
+                         {
+                            'description': "No",
+                            'value': 1,
+                            'orderIndex': 2,     
+                        },
+                    ]
                 },
+                
                 {
                     'question': "Was your vehicle towed?", 
                     'answerType': "single", 
@@ -72,8 +84,8 @@ def newForm1():
 newForm1()
 
 form =  {
-            'name': "Sample Questions for a Bug Report",
-            'description': "A few questions for demonstrating how WeListen can be used for filling in a bug report form",
+            'name': "Bug Report",
+            'description': "A few sample questions for demonstrating how WeListen can be used for filling in a bug report form",
             'questions': [            
                 {
                     'question': "Please specify the title of the error", 
@@ -104,7 +116,7 @@ form =  {
                     ]
                 },
                 {
-                    'question': "Please, give a detailed description of the error", 
+                    'question': "Please give a detailed description of the error", 
                     'answerType': "str", 
                     'orderIndex': 3,
                 },
@@ -144,8 +156,8 @@ def newForm2():
 newForm2()
 
 form =  {
-            'name': "Sample Questions for Requesting Kilometre and Per Diem Allowance ",
-            'description': "A few questions for demonstrating how WeListen can be used for requesting kilometre and per diem allowance",
+            'name': "Requesting Kilometre and Per Diem Allowance ",
+            'description': "A few sample questions for demonstrating how WeListen can be used for requesting kilometre and per diem allowance",
             'questions': [            
                 {
                     'question': "What was the length of the business trip in kilometres?", 
@@ -155,7 +167,7 @@ form =  {
                     'orderIndex': 1,
                 },
                 {
-                    'question': "Please specify the vehicle used for traveling ", 
+                    'question': "Please specify the vehicle used for traveling", 
                     'answerType': "single",
                     'orderIndex': 2,
                     'stringOptions': [
@@ -166,19 +178,19 @@ form =  {
 
                         },
                         {
-                            'description': "Car with trailer",
+                            'description': "Motorcycle",
                             'value': 1,
                             'orderIndex': 2,
 
                         },
                         {
-                            'description': "Motorcycle",
+                            'description': "Train",
                             'value': 2,
                             'orderIndex': 3,
 
                         },
                         {
-                            'description': "Other",
+                            'description': "Bus",
                             'value': 3,
                             'orderIndex': 4,
 

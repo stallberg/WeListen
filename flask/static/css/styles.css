@@ -53,7 +53,7 @@ img {
     background-color: white;
 }
 #transcription:focus {
-    border: 1.5px solid green;
+    border: 1.25px solid red;
 }
 
 #question {
@@ -79,6 +79,7 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2%;
+    margin-top: 1.5%;
 }
 
 .edit-button {
@@ -117,19 +118,23 @@ img {
     margin-bottom: 7%;
 }
 
-a { color: inherit; } 
 
 /* Temp fix to not have the modal cover the header. TODO: find better solution */
 #commandsModal {
-    top: 10%;
+    top: 8%;
 }
 
 #commandsButton {
     display: inline-block;
 }
 
-/* Override bootstrap rules */
-ul li {
-    padding-bottom: 15px !important;
-    padding-top: 0px !important;
+.navbar-brand {
+    font-size: 2em !important;
+    margin-left: 1%;
+    margin-right: 3%;
 }
+
+.nav-link{
+    margin-right:14px !important;
+}
+
