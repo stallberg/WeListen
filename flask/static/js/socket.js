@@ -244,6 +244,7 @@ function clear(){
     if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";
         currentFinal = "";
+        
     }
 
     if(questions[ind].answerType === 'multi'){
