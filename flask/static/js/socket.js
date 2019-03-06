@@ -55,6 +55,10 @@ socket.on('transcription', function(data){
 
 })
 
+socket.on('savePrevious', function() {
+    currentFinal = $("#transcription").html();
+})
+
 function processUserInput(alternatives, isFinal, stability) {
     let questionType = questions[ind].answerType;
     
