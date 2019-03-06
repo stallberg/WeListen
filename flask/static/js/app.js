@@ -286,8 +286,6 @@ function renderQuestion(question) {
         $("#transcription").html(question.answer);
         currentFinal = question.answer;
     }
-
-    changeButtonBackground(true);
 }
 
 function renderMultipleChoiceQuestions({stringOptions}) {

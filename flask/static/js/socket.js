@@ -49,10 +49,19 @@ socket.on('transcription', function(data){
     let alternatives = data.results[0].alternatives
     let stability = data.results[0].stability;    
 
-    if(isSpeechCommand(alternatives, isFinal) === false){
+    let isCommand = isSpeechCommand(alternatives, isFinal)
+
+    if(isCommand === false){
         processUserInput(alternatives, isFinal, stability);
     }
+    
+    // else {
+    //     if(isFinal){
+    //     changeButtonBackground(true);
+    //     $("#transcription").blur();
+    //     }
 
+    // }
 })
 
 socket.on('savePrevious', function() {
@@ -62,7 +71,7 @@ socket.on('savePrevious', function() {
 function processUserInput(alternatives, isFinal, stability) {
 
     //Visual cue to the user that the input is being processed still
-    changeButtonBackground(isFinal);
+    // changeButtonBackground(isFinal);
 
     let questionType = questions[ind].answerType;
     
@@ -138,8 +147,7 @@ function processUserInput(alternatives, isFinal, stability) {
             if(isNumeric(transcription)) {
                 answer = parseFloat(transcription)
                 $("#transcription").html(answer);
-                console.log("ye it is numerical");
-                
+                $("#transcription").blur();
                 return;
             }
         }
