@@ -60,6 +60,10 @@ socket.on('savePrevious', function() {
 })
 
 function processUserInput(alternatives, isFinal, stability) {
+
+    //Visual cue to the user that the input is being processed still
+    changeButtonBackground(isFinal);
+
     let questionType = questions[ind].answerType;
     
     if(questionType === 'single') {

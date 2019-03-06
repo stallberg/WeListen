@@ -375,6 +375,16 @@ function isReviewButtonVisible() {
     return ($('#reviewButton').is(':visible'))
 }
 
+function changeButtonBackground(isFinal) {
+    if(isFinal) {
+        $('.btn').removeClass('transparent');    
+    }
+    else {
+        $('.btn').addClass('transparent');
+    }
+    
+}
+
 
 //Question form for demo
 var form
