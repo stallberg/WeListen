@@ -26,12 +26,16 @@ form =  {
             'questions': [            
                 {
                     'question': "How old are you?", 
-                    'answerType': "str", 
+                    'answerType': "int",
+                    'minValue': 1,
+                    'maxValue': 100, 
                     'orderIndex': 1,
                 },
                 {
                     'question': "How many cars were involved in the accident?", 
-                    'answerType': "str", 
+                    'answerType': "int",
+                    'minValue': 1,
+                    'maxValue': 1000,
                     'orderIndex': 2,
                 },
                 {
@@ -145,7 +149,9 @@ form =  {
             'questions': [            
                 {
                     'question': "What was the length of the business trip in kilometres?", 
-                    'answerType': "str",
+                    'answerType': "int",
+                    'minValue': 1,
+                    'maxValue': 100000,
                     'orderIndex': 1,
                 },
                 {

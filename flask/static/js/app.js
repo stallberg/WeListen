@@ -22,7 +22,6 @@ let updateProgressBar = function() {
 };
 
 let saveAnswer = function(){
-
     if(questions[ind].answerType === 'single') {
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
@@ -46,7 +45,7 @@ let saveAnswer = function(){
         questions[ind].answer = answers;
     }
 
-    else if(questions[ind].answerType === 'str'){
+    else if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int') {
         questions[ind].answer = transcriptionOutput.innerHTML;
         clear();
     }
@@ -277,7 +276,7 @@ function renderQuestion(question) {
     }
 
     //Normal question
-    else if(question.answerType === 'str') {
+    else if(question.answerType === 'str' || question.answerType === 'int') {
         multipleChoiceContainer.style.display = "none";
         normalAnswerContainer.style.display = "block";
         $("#transcription").html(question.answer);
@@ -365,6 +364,10 @@ function isReviewModalVisible() {
 
 function isSaveButtonVisible() {
     return ($('#saveButton').is(':visible'))
+}
+
+function isReviewButtonVisible() {
+    return ($('#reviewButton').is(':visible'))
 }
 
 

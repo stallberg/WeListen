@@ -91,20 +91,16 @@ function processUserInput(transcription, isFinal, stability) {
                         if(element.value.toLowerCase() === transcription.toLowerCase()){
                             element.checked = !element.checked;
                             checkboxCanChange = false;
-                        }
-                        
+                        }      
                     })
                 })
-
             }
         })
-
         //Making sure that the checkbox doesn't get checked/unchecked several times due to how real time streaming returns transcriptions
         if(isFinal)checkboxCanChange = true;
     }
 
     else if(questionType === 'str') {
-
         if(isFinal) {
             currentFinal += transcription;
             $("#transcription").html(currentFinal);
@@ -116,6 +112,22 @@ function processUserInput(transcription, isFinal, stability) {
             if(stability >= 0.2){
                 document.getElementById("transcription").innerHTML = currentFinal + transcription;
             }    
+        }
+    }
+
+    else if(questionType == 'int' && isFinal) {
+        if(isNumeric(transcription)) {
+            answer = parseFloat(transcription)
+            $("#transcription").html(answer);
+        }
+        else {
+            console.log(transcription);
+            $("#transcription").notify(
+                "Please input a numerical value",
+                { position:"top center",
+                  className: 'warning', 
+                }
+            );
         }
     }
 }
@@ -185,29 +197,29 @@ function isSpeechCommand(text, isFinal){
     
 }
 
+//Keyboard support for some simple navigation
 $(document).keydown(function(e){
-    switch(e.key) {
-        
+    switch(e.key) {    
         case 'ArrowLeft':
             if (!isSaveButtonVisible() && !isReviewModalVisible()){
                 previousQuestion();
                 break;
             }
         case 'ArrowRight':
-        if (!isSaveButtonVisible() && !isReviewModalVisible()){
-            nextQuestion();
-            break;
-        }
+            if (!isSaveButtonVisible() && !isReviewButtonVisible()){
+                nextQuestion();
+                break;
+            }
+            
         case 'ArrowDown':
             socket.emit('restart_stream', '');
+
         default: return;
     }
-
 });
 
-
 function clear(){
-    if(questions[ind].answerType === 'str'){
+    if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";
         currentFinal = "";
     }
@@ -220,6 +232,11 @@ function clear(){
         });
     }
 }
+
+//Used to check if user's answer is a valid numeric value
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
 
 //Auto scrolling behaviour of the transcription textarea field
 $("#transcription").change(function() {
