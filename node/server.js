@@ -26,9 +26,16 @@ const speechCommands = [
     'high',
     'medium',
     'low',
-    'crash',
-    'error code',
     'edit question',
+    'yes',
+    'no',
+    'car',
+    'car with trailer',
+    'motorcycle',
+    'other',
+    'Under 6 hours',
+    '6 to 10 hours',
+    'over 10 hours'
 ]
 
 const request = {

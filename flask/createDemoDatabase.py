@@ -178,7 +178,7 @@ form =  {
 
                         },
                         {
-                            'description': "Snowmobile",
+                            'description': "Other",
                             'value': 3,
                             'orderIndex': 4,
 
