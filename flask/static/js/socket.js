@@ -147,19 +147,15 @@ function isSpeechCommand(alternatives, isFinal){
 
     for(let i = 0; i < alternatives.length; i++) {
         let command = alternatives[i].transcript.toLowerCase().trim();
-        console.log("command : " + command);
+        if (command[command.length-1] === ".")
+            command = command.slice(0,-1);
         
+        console.log("command : " + command);
         
         switch(command){
             case 'clear':
                 if(isFinal){
                     clear();
-                }
-                return true;
-            
-            case 'remove last':
-                if(isFinal) {
-
                 }
                 return true;
 
@@ -211,10 +207,11 @@ function isSpeechCommand(alternatives, isFinal){
                 return true;
                 
             default:
-                return false;
+                break;
             
         }
     }
+    return false
     
 }
 
