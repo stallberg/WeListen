@@ -138,6 +138,8 @@ function processUserInput(alternatives, isFinal, stability) {
             if(isNumeric(transcription)) {
                 answer = parseFloat(transcription)
                 $("#transcription").html(answer);
+                console.log("ye it is numerical");
+                
                 return;
             }
         }

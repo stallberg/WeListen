@@ -287,6 +287,7 @@ function renderQuestion(question) {
         currentFinal = question.answer;
     }
 
+    changeButtonBackground(true);
 }
 
 function renderMultipleChoiceQuestions({stringOptions}) {
