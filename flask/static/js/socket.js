@@ -51,7 +51,7 @@ socket.on('transcription', function(data){
 
     let isCommand = isSpeechCommand(alternatives, isFinal)
 
-    if(isCommand === false){
+    if(isCommand === false && !isReviewModalVisible()){
         processUserInput(alternatives, isFinal, stability);
     }
     
