@@ -179,13 +179,15 @@ function isSpeechCommand(alternatives, isFinal){
 
             case 'next':
                 if(isFinal){
-                    nextQuestion();
+                    if(!isSaveButtonVisible())
+                        nextQuestion();
                 }
                 return true;
             
             case 'previous':
                 if(isFinal){
-                    previousQuestion();
+                    if(!isSaveButtonVisible())
+                        previousQuestion();
                 }
                 return true;
 
