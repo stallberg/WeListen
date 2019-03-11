@@ -5,3 +5,4 @@ node/service_account_key.json
 flask/service_account_key.json
 **/.welisten.db
 **/__pycache__
+flask/geckodriver.log
