@@ -47,7 +47,7 @@ function saveAnswer(){
     }
 
     else if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int') {
-        questions[ind].answer = transcriptionOutput.innerHTML;
+        questions[ind].answer = transcriptionOutput.value;
         if(!isReviewButtonVisible()) {
             clear();
         }

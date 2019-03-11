@@ -259,6 +259,7 @@ $(document).keydown(function(e){
 function clear(){
     if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";
+        transcriptionField.value = "";
         currentFinal = "";
         
     }
