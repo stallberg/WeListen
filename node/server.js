@@ -86,6 +86,7 @@ const request = {
             .on('error', (error) => {
                 if(error.message === 'Exceeded maximum allowed stream duration of 65 seconds.'){
                     console.log("Exceeded stream duration of 65 seconds");
+                    client.emit('savePrevious');
                     restartRecognitionStream(client);
                 }
                 else {

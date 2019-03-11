@@ -49,13 +49,30 @@ socket.on('transcription', function(data){
     let alternatives = data.results[0].alternatives
     let stability = data.results[0].stability;    
 
-    if(isSpeechCommand(alternatives, isFinal) === false){
+    let isCommand = isSpeechCommand(alternatives, isFinal)
+
+    if(isCommand === false && !isReviewModalVisible()){
         processUserInput(alternatives, isFinal, stability);
     }
+    
+    // else {
+    //     if(isFinal){
+    //     changeButtonBackground(true);
+    //     $("#transcription").blur();
+    //     }
 
+    // }
+})
+
+socket.on('savePrevious', function() {
+    currentFinal = $("#transcription").html();
 })
 
 function processUserInput(alternatives, isFinal, stability) {
+
+    //Visual cue to the user that the input is being processed still
+    // changeButtonBackground(isFinal);
+
     let questionType = questions[ind].answerType;
     
     if(questionType === 'single') {
@@ -130,6 +147,7 @@ function processUserInput(alternatives, isFinal, stability) {
             if(isNumeric(transcription)) {
                 answer = parseFloat(transcription)
                 $("#transcription").html(answer);
+                $("#transcription").blur();
                 return;
             }
         }
@@ -161,13 +179,15 @@ function isSpeechCommand(alternatives, isFinal){
 
             case 'next':
                 if(isFinal){
-                    nextQuestion();
+                    if(!isSaveButtonVisible())
+                        nextQuestion();
                 }
                 return true;
             
             case 'previous':
                 if(isFinal){
-                    previousQuestion();
+                    if(!isSaveButtonVisible())
+                        previousQuestion();
                 }
                 return true;
 
@@ -240,6 +260,7 @@ function clear(){
     if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";
         currentFinal = "";
+        
     }
 
     if(questions[ind].answerType === 'multi'){

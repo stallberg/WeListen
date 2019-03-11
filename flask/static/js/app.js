@@ -15,13 +15,14 @@ let multipleChoiceOptions = document.getElementById("multiple-choice-options");
 let ttsEnabled = true;
 
 
-let updateProgressBar = function() {
+function updateProgressBar() {
     let percentage = ((ind+1) / questions.length)*100
     $(".progress-bar").css("width", `${percentage}%`);
     $(".progress-bar").html(`${ind+1}/${questions.length}`);
 };
 
-let saveAnswer = function(){
+function saveAnswer(){
+    
     if(questions[ind].answerType === 'single') {
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
@@ -33,7 +34,7 @@ let saveAnswer = function(){
     }
 
     //store checkbox answers in array?
-    if(questions[ind].answerType === 'multi') {
+    else if(questions[ind].answerType === 'multi') {
         let answers = []
         $(".custom-checkbox").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
@@ -47,7 +48,9 @@ let saveAnswer = function(){
 
     else if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int') {
         questions[ind].answer = transcriptionOutput.innerHTML;
-        clear();
+        if(!isReviewButtonVisible()) {
+            clear();
+        }
     }
 
 };
@@ -79,6 +82,7 @@ var previousQuestion = function(){
 var nextQuestion = function(){
     socket.emit('restart_stream', '');
     if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
+
     saveAnswer();
     ind++;
     updateProgressBar();
@@ -280,8 +284,8 @@ function renderQuestion(question) {
         multipleChoiceContainer.style.display = "none";
         normalAnswerContainer.style.display = "block";
         $("#transcription").html(question.answer);
+        currentFinal = question.answer;
     }
-
 }
 
 function renderMultipleChoiceQuestions({stringOptions}) {
@@ -368,6 +372,16 @@ function isSaveButtonVisible() {
 
 function isReviewButtonVisible() {
     return ($('#reviewButton').is(':visible'))
+}
+
+function changeButtonBackground(isFinal) {
+    if(isFinal) {
+        $('.btn').removeClass('transparent');    
+    }
+    else {
+        $('.btn').addClass('transparent');
+    }
+    
 }
 
 

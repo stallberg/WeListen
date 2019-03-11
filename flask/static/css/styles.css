@@ -79,7 +79,7 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2%;
-    margin-top: 1.5%;
+    margin-top: 2%;
 }
 
 .edit-button {
@@ -136,5 +136,9 @@ img {
 
 .nav-link{
     margin-right:14px !important;
+}
+
+.transparent {
+    opacity: 0.5;
 }
 
