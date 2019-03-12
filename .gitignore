@@ -4,7 +4,7 @@ node/node_modules
 node/service_account_key.json
 flask/service_account_key.json
 **/.welisten.db
-**/__pycache__
+flask/__pycache__
 flask/geckodriver.log
 flask/.pytest_cache
 .vscode
