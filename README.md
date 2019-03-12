@@ -6,5 +6,29 @@ To run the application locally, the following is required:
 - Node and the npm package manager
 - A serice account key json file from Google Cloud Platform. This is required to have access to the google APIs being used. This json file needs to be set as an environment variable called GOOGLE_APPLICATION_CREDENTIALS
 
+Next, install all the required dependencies for flask
+
+```
+pip install -r flask/requirements.txt
+```
+
+and for node
+
+```
+cd node
+npm install
+```
+Run the flask web application server
+
+```
+python flask/server.py
+```
+and the node SocketIO server
+
+```
+node node/server.js
+```
+For local development, the application can be accessed at http://localhost:8000
+
 ## Running the application with Docker
 The application is fully containerized with Docker. Run `docker-compose up -d --build` to build and run the entire application based on the docker-compose.yaml configuration. Currently, docker is configured and used only for cloud deployment and not for local development. 
