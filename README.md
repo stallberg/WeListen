@@ -1,4 +1,4 @@
-This repository contains the code for the project course (team WeListen). The demo shown at ICT-showroom can be seen at https://welisten.macister.fi/
+This repository contains the code for the project course 2018-2019 (team WeListen). The demo shown at ICT-showroom can be seen at https://welisten.macister.fi/
 
 ## Requirements for running the application locally
 To run the application locally, the following is required:
