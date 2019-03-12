@@ -46,4 +46,4 @@ Note that the functional UI tests are currently configured with the Firefox web 
 
 
 # Running the application with Docker
-The application is fully containerized with Docker. Run `docker-compose up -d --build` to build and run the entire application based on the docker-compose.yaml configuration. Currently, docker is configured and used only for cloud deployment and not for local development. 
+The application is fully containerized with Docker. Run `docker-compose up -d --build` to build and run the entire application based on the docker-compose.yaml configuration. Currently, docker is configured and used only for cloud deployment with Jenkins, and not for local development. 
