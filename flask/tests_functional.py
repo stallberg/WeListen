@@ -1,3 +1,5 @@
+# This file contains automated UI tests (functional tests) written as user stories
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import unittest
@@ -33,6 +35,58 @@ class FillInFormTest(unittest.TestCase):
             for choice in element:
                 webdriver.ActionChains(self.browser).move_to_element(choice).click(choice).perform()
                 self.assertTrue(choice.is_selected())
+
+    
+    def test_form_review_functionality(self):
+        self.browser.get('http://localhost:8000/forms/2/')
+        resp = requests.get('http://localhost:8000/forms/2/json/')
+        form = resp.json()
+        questions_length = len(form['questions'])
+        
+        #User goes through all the questions until he/she reaches the last one
+        for i in range(questions_length):
+            if i != questions_length -1:
+                self.browser.find_element_by_id('nextButton').click()
+
+        #User clicks on the review button
+        self.browser.find_element_by_id('reviewButton').click()
+
+        #Form summary modal is opened
+        self.assertTrue(self.browser.find_element_by_id('reviewModal').is_enabled())
+
+    
+    def test_editquestion_and_save_functionality(self):
+        #User opens up the bug report form
+        self.browser.get('http://localhost:8000/forms/2/')
+        resp = requests.get('http://localhost:8000/forms/2/json/')
+        form = resp.json()
+        questions_length = len(form['questions'])
+        
+        #User goes through all the questions until he/she reaches the last one
+        for i in range(questions_length):
+            if i != questions_length -1:
+                self.browser.find_element_by_id('nextButton').click()
+
+        #User clicks on the review button and modal opens up
+        self.browser.find_element_by_id('reviewButton').click()
+
+        #User edits the answer of the first question
+        e = self.browser.find_element_by_class_name('edit-button')
+        webdriver.ActionChains(self.browser).move_to_element(e).click(e).perform()
+        time.sleep(1)
+        self.browser.find_element_by_id('clearButton').click()
+        self.assertEqual(self.browser.find_element_by_id('transcription').get_attribute('value'), '')
+
+        self.browser.find_element_by_id('transcription').send_keys("Edited Answer")
+        self.assertEqual(self.browser.find_element_by_id('transcription').get_attribute('value'), "Edited Answer")
+
+        self.browser.find_element_by_id('saveButton').click()
+
+        #User is now back at the form review modal
+
+        self.assertTrue(self.browser.find_element_by_id('reviewModal').is_enabled())
+
+
 
     def test_next_and_previous_buttons(self):
         self.browser.get('http://localhost:8000/forms/1/')
