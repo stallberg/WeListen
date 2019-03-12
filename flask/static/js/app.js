@@ -354,6 +354,19 @@ function resetAllAnswers(questions) {
     return questions
 }
 
+//Sent as keywords to the socketIO backend that creates the speech API requests
+function generateSpeechConfig(questions) {    
+    keywords = []
+    questions.forEach((question) => {
+        if(question.answerType === 'single' || question.answerType === 'multi') {
+            question.stringOptions.forEach((option) => {
+                keywords.push(option.description)
+            })
+        }
+    })
+    return keywords
+}
+
 function isFirstQuestion() {
     return (ind === 0)
 }
@@ -391,8 +404,11 @@ var form
 //array of all questions
 var questions
 
+//Keywords for the speech API
+var speechConfig = []
+
 //current question index
-let ind = 0;
+var ind = 0;
 
 
 // TODO: FIX PROPERLY
@@ -406,6 +422,11 @@ let ind = 0;
         questions = form.questions
 
         questions = resetAllAnswers(questions)
+
+        speechConfig = generateSpeechConfig(questions)
+
+        //Start the speech request
+        socket.emit('start_stream', speechConfig)
 
         //initialize progressbar
         updateProgressBar()

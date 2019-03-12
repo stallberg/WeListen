@@ -1,6 +1,3 @@
-
-var io = require('socket.io')(3000);
-
 console.log("Starting socket-io server...");
 
 // Imports the Google Cloud client library
@@ -12,6 +9,8 @@ const encoding = 'LINEAR16';
 const sampleRateHertz = 16000;
 const languageCode = 'en-US';
 
+//Sent as help to the speech API request.
+//Additional commands are sent from client based on form before sending request
 const speechCommands = [
     'clear',
     'next',
@@ -20,29 +19,10 @@ const speechCommands = [
     'save',
     'close',
     'submit',
-    'desktop',
-    'mobile',
-    'tablet',
-    'high',
-    'medium',
-    'low',
     'edit question',
-    'edit question 1',
-    'edit question 2',
-    'edit question 3',
-    'edit question 4',
-    'yes',
-    'no',
-    'car',
-    'train',
-    'bus',
-    'motorcycle',
-    'Under 6 hours',
-    '6 to 10 hours',
-    'over 10 hours'
 ]
 
-const request = {
+let request = {
     config: {
       encoding: encoding,
       sampleRateHertz: sampleRateHertz,
@@ -56,6 +36,7 @@ const request = {
     interimResults: true,
   };
 
+let io = require('socket.io')(3000);
 
 
   io.on('connection', function (client) {
@@ -63,6 +44,8 @@ const request = {
     let recognizeStream = null;
 
     client.on('start_stream', function (data) {
+        let speechContext = speechCommands.concat(data)
+        request.config.speechContexts[0].phrases = speechContext
         startRecognitionStream(this, data);
     });
 

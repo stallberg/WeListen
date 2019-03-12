@@ -10,8 +10,8 @@ else {
 }
 
 let transcriptionField = document.getElementById("transcription");
+//Variable used for handling checkbox multiple choice interaction with voice input
 let checkboxCanChange = true;
-let isTalking = false;
 
 //For recording audio from user's microphone
 navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:true})
@@ -19,7 +19,6 @@ navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:
 
 
 function handleUserAudio(stream) {
-	socket.emit('start_stream', '')
     let context = new AudioContext();
     let sampleRate = context.sampleRate;
     
