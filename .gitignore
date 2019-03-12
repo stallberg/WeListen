@@ -6,3 +6,6 @@ flask/service_account_key.json
 **/.welisten.db
 **/__pycache__
 flask/geckodriver.log
+flask/.pytest_cache
+.vscode
+

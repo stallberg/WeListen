@@ -4,7 +4,6 @@ import unittest
 import time
 import requests
 
-
 class FillInFormTest(unittest.TestCase):
 
     def setUp(self):
