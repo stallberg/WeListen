@@ -3,6 +3,7 @@ from databaseApi import DBApi
 from text_to_speech import tts
 import json
 import pytest
+from text_to_speech import tts
 
 @pytest.fixture
 def client():
@@ -52,6 +53,17 @@ def test_DBapi_get_forms(client):
     dbApi = DBApi()
     forms = dbApi.getForms()
     assert len(forms) == 3
+
+def test_create_tts_url_without_options(client):
+    url = tts.create_TTS_URL("Test question", None)
+    assert type(url) == str
+    assert len(url) > 0
+
+def test_create_tts_url_with_options(client):
+    options = [{'description': 'Yes'}, {'description': 'No'}]
+    url = tts.create_TTS_URL("Test question", options)
+    assert type(url) == str
+    assert len(url) > 0
 
 
     
