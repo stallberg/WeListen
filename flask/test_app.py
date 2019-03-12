@@ -1,3 +1,5 @@
+# This file contains unit tests
+
 from server import app
 from databaseApi import DBApi
 from text_to_speech import tts
