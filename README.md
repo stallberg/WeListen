@@ -1,6 +1,6 @@
 This repository contains the code for the project course 2018-2019 (team WeListen). The demo shown at ICT-showroom can be seen at https://welisten.macister.fi/
 
-## Requirements for running the application locally
+# Requirements for running the application locally
 To run the application locally, the following is required:
 - Python3 and the python package manager (pip)
 - Node and the npm package manager
@@ -30,5 +30,18 @@ node node/server.js
 ```
 For local development, the application can be accessed at http://localhost:8000
 
-## Running the application with Docker
+## Running tests
+The flask application contains both unit- and functional (automated UI) tests. They can be run as follows: 
+```
+cd flask
+//run unittests
+pytest
+
+//run automated UI tests
+python tests_functional.py
+```
+Note that the functional UI tests are currently configured with the Firefox web browser in mind. This requires having the geckodriver in the system PATH (https://github.com/mozilla/geckodriver/releases).
+
+
+# Running the application with Docker
 The application is fully containerized with Docker. Run `docker-compose up -d --build` to build and run the entire application based on the docker-compose.yaml configuration. Currently, docker is configured and used only for cloud deployment and not for local development. 
