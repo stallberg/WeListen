@@ -18,6 +18,7 @@ navigator.mediaDevices.getUserMedia({audio:true, video: false, noiseSuppression:
 	.then(handleUserAudio);
 
 
+//Handles audio from the microphone
 function handleUserAudio(stream) {
     let context = new AudioContext();
     let sampleRate = context.sampleRate;
@@ -40,11 +41,10 @@ function handleUserAudio(stream) {
 }
 
 
-//Receives the transcribed audio data from server, returned as object
+//Receives the transcribed audio data from server, returned as an object
 let currentFinal = "";
 socket.on('transcription', function(data){
     let isFinal = data.results[0].isFinal;
-    //let transcription = data.results[0].alternatives[0].transcript;
     let alternatives = data.results[0].alternatives
     let stability = data.results[0].stability;    
 
@@ -53,22 +53,14 @@ socket.on('transcription', function(data){
     if(isCommand === false && !isReviewModalVisible()){
         processUserInput(alternatives, isFinal, stability);
     }
-    
-    // else {
-    //     if(isFinal){
-    //     changeButtonBackground(true);
-    //     $("#transcription").blur();
-    //     }
-
-    // }
 })
 
+//Called when the speech request has to restart due to time limitation
 socket.on('savePrevious', function() {
     currentFinal = $("#transcription").html();
 })
 
 function processUserInput(alternatives, isFinal, stability) {
-
     //Visual cue to the user that the input is being processed still
     // changeButtonBackground(isFinal);
 
@@ -160,6 +152,7 @@ function processUserInput(alternatives, isFinal, stability) {
     }
 }
 
+//Checks if user input is a speech command
 function isSpeechCommand(alternatives, isFinal){
 
     for(let i = 0; i < alternatives.length; i++) {
@@ -255,6 +248,7 @@ $(document).keydown(function(e){
     }
 });
 
+//clear the current answer
 function clear(){
     if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";

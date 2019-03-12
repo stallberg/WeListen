@@ -21,8 +21,8 @@ function updateProgressBar() {
     $(".progress-bar").html(`${ind+1}/${questions.length}`);
 };
 
+//Handler for saving the answer before the user switches question
 function saveAnswer(){
-    
     if(questions[ind].answerType === 'single') {
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
@@ -33,7 +33,6 @@ function saveAnswer(){
         })  
     }
 
-    //store checkbox answers in array?
     else if(questions[ind].answerType === 'multi') {
         let answers = []
         $(".custom-checkbox").each(function(i, container) {
@@ -55,7 +54,7 @@ function saveAnswer(){
 
 };
 
-// previous function (needs refactoring)
+// previous function handler
 var previousQuestion = function(){
     socket.emit('restart_stream', '');
     if(ind === 0) return; // prevent voice commands from going out of bounds
@@ -78,7 +77,7 @@ var previousQuestion = function(){
     setTimeout(function(){ playTTS() }, 400);
 };
 
-// next function (needs refactoring)
+// next button handler
 var nextQuestion = function(){
     socket.emit('restart_stream', '');
     if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
@@ -89,7 +88,6 @@ var nextQuestion = function(){
     renderQuestion(questions[ind])
 
     if (ind < questions.length-1){
-        //questionOutput.innerHTML = questions[ind].question;
         previousButton.disabled = false;
     }
 
@@ -109,8 +107,7 @@ var nextQuestion = function(){
 var toQuestion = function(index){
     ind = index
     $('#reviewModal').modal('toggle');
-    socket.emit('restart_stream', '');
-    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds   
+    socket.emit('restart_stream', '');   
     updateProgressBar();
     console.log(questions[ind].answer)
     renderQuestion(questions[ind])
@@ -156,7 +153,6 @@ function reviewForm() {
 //save after editing
 function saveEdit(){
     socket.emit('restart_stream', '');
-    //if(ind === questions.length-1) return; // prevent voice commands from going out of bounds
     saveAnswer();
     ind = questions.length-1;
     updateProgressBar();
@@ -173,7 +169,7 @@ function saveEdit(){
     reviewForm()
 }
 
-//savePDF()
+//saving form answers as PDF
 function savePDF(){
     let i;
     let reviewOutput = 'Test Form\n';
@@ -189,7 +185,7 @@ function savePDF(){
     doc.save('test.pdf');
 };
 
-//vc toggle
+//voice control toggle
 function toggleVoiceCommandsHandler(){
     $("#toggleVoiceCommands").toggleClass("muted");
 }
@@ -411,8 +407,7 @@ var speechConfig = []
 var ind = 0;
 
 
-// TODO: FIX PROPERLY
-/* TESTING FORM FETCH */ 
+//Fetch the form json from backend 
  fetch('./json/')
     .then(function(response) {
         return response.json()
