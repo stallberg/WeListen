@@ -46,7 +46,7 @@ function saveAnswer(){
     }
 
     else if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int') {
-        questions[ind].answer = transcriptionOutput.value;
+        questions[ind].answer = transcriptionOutput.innerHTML;
         if(!isReviewButtonVisible()) {
             clear();
         }
@@ -128,9 +128,8 @@ var toQuestion = function(index){
 // review form
 function reviewForm() {
     stopTTS()   // stop playing the text-to-speech
-    saveAnswer() //Save last answer
+    saveAnswer()
     let reviewOutput = "";
-    let questionButton = "";
 
     for(let i = 0; i < questions.length; i++) {
         reviewOutput+= `<h5>${i+1}. ${questions[i].question}<button onclick="toQuestion(${i})"class="edit-button"> <i class="fa fa-pencil"></i></button></h5>`

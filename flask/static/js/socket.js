@@ -252,12 +252,11 @@ $(document).keydown(function(e){
 function clear(){
     if(questions[ind].answerType === 'str' || questions[ind].answerType === 'int'){
         transcriptionField.innerHTML = "";
-        transcriptionField.value = "";
         currentFinal = "";
         
     }
 
-    if(questions[ind].answerType === 'multi'){
+    else if(questions[ind].answerType === 'multi'){
         $(".custom-checkbox").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 element.checked = false;   
@@ -265,7 +264,7 @@ function clear(){
         });
     }
 
-    if(questions[ind].answerType === 'single'){
+    else if(questions[ind].answerType === 'single'){
         $(".custom-radio").each(function(i, container) {
             $(container).children('input').each(function(j, element) {
                 element.checked = false;   
